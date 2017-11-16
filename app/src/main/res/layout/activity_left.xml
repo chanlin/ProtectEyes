@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="142dp"
+        android:layout_height="match_parent"
+        android:background="@color/gree2a"
+        android:orientation="vertical">
+
+        <!-- 菜单页面 -->
+
+      <!--  <RadioGroup
+            android:id="@+id/bottomRg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="68dp"
+            android:orientation="vertical">-->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+            <LinearLayout
+                android:id="@+id/ll_left_one"
+                android:paddingTop="@dimen/align_5"
+                android:paddingBottom="@dimen/align_5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="眼距保护"/>
+                    <Switch
+                        android:id="@+id/switch_one"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:switchMinWidth="20dp"
+                        android:textOn=" 开 "
+                        android:textOff=" 关 "
+                        android:thumb="@drawable/thumb"
+                        android:track="@drawable/track"/>
+                </LinearLayout>
+                 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_2"
+                    android:background="@color/white"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_left_two"
+                android:paddingTop="@dimen/align_5"
+                android:paddingBottom="@dimen/align_5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="光线感应"/>
+                    <Switch
+                        android:id="@+id/switch_two"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:switchMinWidth="20dp"
+                        android:textOn=" 开 "
+                        android:textOff=" 关 "
+                        android:thumb="@drawable/thumb"
+                        android:track="@drawable/track"/> 
+                </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/line_2"
+                        android:background="@color/white"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_left_three"
+                android:paddingTop="@dimen/align_5"
+                android:paddingBottom="@dimen/align_5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="用眼疲劳提醒"/>
+                <Switch
+                    android:id="@+id/switch_three"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:switchMinWidth="20dp"
+                    android:textOn=" 开 "
+                    android:textOff=" 关 "
+                    android:thumb="@drawable/thumb"
+                    android:track="@drawable/track"/> 
+    </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_2"
+                    android:background="@color/white"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_left_four"
+                android:paddingTop="@dimen/align_5"
+                android:paddingBottom="@dimen/align_5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="反转提醒"/>
+                <Switch
+                    android:id="@+id/switch_four"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:switchMinWidth="20dp"
+                    android:textOn=" 开 "
+                    android:textOff=" 关 "
+                    android:thumb="@drawable/thumb"
+                    android:track="@drawable/track"/> 
+                    </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_2"
+                    android:background="@color/white"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_left_five"
+                android:paddingTop="@dimen/align_5"
+                android:paddingBottom="@dimen/align_5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="抖动提醒"/>
+                <Switch
+                    android:id="@+id/switch_five"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:switchMinWidth="20dp"
+                    android:textOn=" 开 "
+                    android:textOff=" 关 "
+                    android:thumb="@drawable/thumb"
+                    android:track="@drawable/track"/> 
+                    </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_2"
+                    android:background="@color/white"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_left_six"
+                android:paddingTop="@dimen/align_5"
+                android:paddingBottom="@dimen/align_5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="色温调节"/>
+                <Switch
+                    android:id="@+id/switch_six"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:switchMinWidth="20dp"
+                    android:textOn=" 开 "
+                    android:textOff=" 关 "
+                    android:thumb="@drawable/thumb"
+                    android:track="@drawable/track"/> 
+                    </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_2"
+                    android:background="@color/white"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_left_seven"
+                android:paddingTop="@dimen/align_5"
+                android:paddingBottom="@dimen/align_5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="黑白阅读"/>
+                <Switch
+                    android:id="@+id/switch_seven"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:switchMinWidth="20dp"
+                    android:textOn=" 开 "
+                    android:textOff=" 关 "
+                    android:thumb="@drawable/thumb"
+                    android:track="@drawable/track"/> 
+                    </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_2"
+                    android:background="@color/white"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_left_eight"
+                android:paddingTop="@dimen/align_5"
+                android:paddingBottom="@dimen/align_5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="眼保健操"/>
+                <Switch
+                    android:id="@+id/switch_eight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:switchMinWidth="20dp"
+                    android:textOn=" 开 "
+                    android:textOff=" 关 "
+                    android:thumb="@drawable/thumb"
+                    android:track="@drawable/track"/> 
+                <!--<View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/line_2"
+                    android:background="@color/white"/>-->
+            </LinearLayout>
+    </LinearLayout>
+      <!--  </RadioGroup>-->
+    </LinearLayout>
+</LinearLayout>

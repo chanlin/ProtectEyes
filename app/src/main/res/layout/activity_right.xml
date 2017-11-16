@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <fragment
+            android:id="@+id/fragement_one"
+            android:name="com.huayinghealth.protecteyes.fragment.FragmentOne"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="10"
+            tools:layout="@layout/fragment_one" />
+
+        <fragment
+            android:id="@+id/fragement_two"
+            android:name="com.huayinghealth.protecteyes.fragment.FragmentTwo"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="10"
+            tools:layout="@layout/fragment_two" />
+
+        <fragment
+            android:id="@+id/fragement_three"
+            android:name="com.huayinghealth.protecteyes.fragment.FragmentThree"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="10"
+            tools:layout="@layout/fragment_three" />
+
+        <fragment
+            android:id="@+id/fragement_four"
+            android:name="com.huayinghealth.protecteyes.fragment.FragmentFour"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="10"
+            tools:layout="@layout/fragment_four" />
+
+        <fragment
+            android:id="@+id/fragement_five"
+            android:name="com.huayinghealth.protecteyes.fragment.FragmentFive"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="10"
+            tools:layout="@layout/fragment_five" />
+
+        <fragment
+            android:id="@+id/fragement_six"
+            android:name="com.huayinghealth.protecteyes.fragment.FragmentSix"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="10"
+            tools:layout="@layout/fragment_six" />
+        <fragment
+            android:id="@+id/fragement_seven"
+            android:name="com.huayinghealth.protecteyes.fragment.FragmentSeven"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="10"
+            tools:layout="@layout/fragment_seven" />
+        <fragment
+            android:id="@+id/fragement_eight"
+            android:name="com.huayinghealth.protecteyes.fragment.FragmentEight"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="10"
+            tools:layout="@layout/fragment_eight" />
+    </LinearLayout>
+</LinearLayout>
