@@ -11,12 +11,13 @@
         android:layout_height="wrap_content"
         android:text="第二节 挤按眼明穴"/>
 
-    <ImageView
-        android:id="@+id/iv_eight_img"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_eight_imgs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:src="@mipmap/iv_eight_img_1"/>
+        android:overScrollMode="never">
+
+    </android.support.v4.view.ViewPager>
 
     <Button
         android:layout_width="wrap_content"
