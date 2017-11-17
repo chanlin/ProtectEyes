@@ -6,4 +6,5 @@
     <dimen name="align_10">10dp</dimen>
     <dimen name="align_5">5dp</dimen>
     <dimen name="line_2">2dp</dimen>
+    <dimen name="padding_50">50dp</dimen>
 </resources>

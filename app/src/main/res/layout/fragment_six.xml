@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
     <TextView
-
+        android:paddingTop="@dimen/padding_50"
+        android:layout_marginBottom="@dimen/align_10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="色温调节"/>
+    <SeekBar
+        android:id="@+id/sb_colortemperature"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="six"/>
+        android:layout_height="wrap_content"
+        android:max="100"/>
 </LinearLayout>
