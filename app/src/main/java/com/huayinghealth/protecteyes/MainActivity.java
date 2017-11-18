@@ -19,7 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.Toast;
-
+ 
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
 
     private Context mContex;
