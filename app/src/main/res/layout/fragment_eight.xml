@@ -11,12 +11,14 @@
         android:layout_height="wrap_content"
         android:text="第二节 挤按眼明穴"/>
 
-    <ImageView
-        android:id="@+id/iv_eight_img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:src="@mipmap/iv_eight_img_1"/>
+    <android.support.v4.view.ViewPager
+        android:layout_gravity="center"
+        android:id="@+id/vp_eight_imgs"
+        android:layout_width="@dimen/padding_50"
+        android:layout_height="@dimen/padding_50"
+        android:overScrollMode="never">
+
+    </android.support.v4.view.ViewPager>
 
     <Button
         android:layout_width="wrap_content"
@@ -35,4 +37,11 @@
 
         android:text="在已设置好的时间钟，如刀休息时间，将播放眼保健操；关于眼保健操，根据中医经络理论，通过按摩穴位起到通经活络，改善眼部血液循环，以达到维护视力/防止近视的作用，对治疗假性近视也大有益处。"
         />
+<!--
+光线感应： 设置，显示， 自动调节亮度
+色温：
+
+
+-->
+
 </LinearLayout>
