@@ -12,9 +12,10 @@
         android:text="第二节 挤按眼明穴"/>
 
     <android.support.v4.view.ViewPager
+        android:layout_gravity="center"
         android:id="@+id/vp_eight_imgs"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/padding_50"
+        android:layout_height="@dimen/padding_50"
         android:overScrollMode="never">
 
     </android.support.v4.view.ViewPager>

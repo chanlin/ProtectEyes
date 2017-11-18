@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 public class FragmentEight extends Fragment {
 
     private ViewPager viewPager;
+    private View img1,img2;
     private FragmentPagerAdapter adapter;
     @Nullable
     @Override
@@ -35,7 +37,35 @@ public class FragmentEight extends Fragment {
     }
     private void setView(){
         viewPager = (ViewPager)getActivity().findViewById(R.id.vp_eight_imgs);
-        ArrayList list = new ArrayList();
-        list.add();
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        img1 = inflater.inflate(R.layout.eight_img1,null);
+        img2 = inflater.inflate(R.layout.eight_img2,null);
+        final ArrayList<View> list = new ArrayList();
+        list.add(img1);
+        list.add(img2);
+
+        PagerAdapter pagerAdapter = new PagerAdapter() {
+            @Override
+            public int getCount() {
+                return  list.size();
+            }
+
+            @Override
+            public boolean isViewFromObject(View view, Object object) {
+                return view == object;
+            }
+
+            @Override
+            public void destroyItem(ViewGroup container, int position, Object object) {
+                container.removeView(list.get(position));
+            }
+
+            @Override
+            public Object instantiateItem(ViewGroup container, int position) {
+                container.addView(list.get(position));
+                return  list.get(position);
+            }
+        };
+        viewPager.setAdapter(pagerAdapter);
     }
 }
