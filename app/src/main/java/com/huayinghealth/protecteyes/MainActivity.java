@@ -16,10 +16,11 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.Toast;
- 
+
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
 
     private Context mContex;
@@ -27,6 +28,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private RadioGroup bottomRg;
     private LinearLayout ll_one,ll_two,ll_three,ll_four,ll_five,ll_six,ll_seven,ll_eight;
     private Switch switch_one,switch_two,switch_three,switch_four,switch_five,switch_six,switch_seven,switch_eight;
+    private RadioButton rbOne, rbTwo, rbThree, rbFour, rbFive, rbSix, rbSenve, rbEight;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private ImageView bt_exit;
@@ -68,23 +70,23 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         bt_exit.setOnClickListener(this);
 
        // bottomRg = (RadioGroup) findViewById(R.id.bottomRg);
-        ll_one = (LinearLayout) findViewById(R.id.ll_left_one);
-        ll_two = (LinearLayout) findViewById(R.id.ll_left_two);
-        ll_three = (LinearLayout) findViewById(R.id.ll_left_three);
-        ll_four = (LinearLayout) findViewById(R.id.ll_left_four);
-        ll_five = (LinearLayout) findViewById(R.id.ll_left_five);
-        ll_six = (LinearLayout) findViewById(R.id.ll_left_six);
-        ll_seven = (LinearLayout) findViewById(R.id.ll_left_seven);
-        ll_eight = (LinearLayout) findViewById(R.id.ll_left_eight);
+        rbOne = (RadioButton) findViewById(R.id.rbOne);
+        rbTwo = (RadioButton) findViewById(R.id.rbTwo);
+        rbThree = (RadioButton) findViewById(R.id.rbThree);
+        rbFour = (RadioButton) findViewById(R.id.rbFour);
+        rbFive = (RadioButton) findViewById(R.id.rbFive);
+        rbSix = (RadioButton) findViewById(R.id.rbSix);
+        rbSenve = (RadioButton) findViewById(R.id.rbSenve);
+        rbEight = (RadioButton) findViewById(R.id.rbEight);
 
-        switch_one = (Switch) findViewById(R.id.switch_one);
-        switch_two = (Switch) findViewById(R.id.switch_two);
-        switch_three = (Switch) findViewById(R.id.switch_three);
-        switch_four = (Switch) findViewById(R.id.switch_four);
-        switch_five = (Switch) findViewById(R.id.switch_five);
-        switch_six = (Switch) findViewById(R.id.switch_six);
-        switch_seven = (Switch) findViewById(R.id.switch_seven);
-        switch_eight = (Switch) findViewById(R.id.switch_eight);
+//        switch_one = (Switch) findViewById(R.id.switch_one);
+//        switch_two = (Switch) findViewById(R.id.switch_two);
+//        switch_three = (Switch) findViewById(R.id.switch_three);
+//        switch_four = (Switch) findViewById(R.id.switch_four);
+//        switch_five = (Switch) findViewById(R.id.switch_five);
+//        switch_six = (Switch) findViewById(R.id.switch_six);
+//        switch_seven = (Switch) findViewById(R.id.switch_seven);
+//        switch_eight = (Switch) findViewById(R.id.switch_eight);
 
         setClick();
     }
@@ -111,23 +113,23 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             }
         });*/
 
-        ll_one .setOnClickListener(this);
-        ll_two.setOnClickListener(this);
-        ll_three.setOnClickListener(this);
-        ll_four .setOnClickListener(this);
-        ll_five .setOnClickListener(this);
-        ll_six .setOnClickListener(this);
-        ll_seven .setOnClickListener(this);
-        ll_eight .setOnClickListener(this);
+        rbOne .setOnClickListener(this);
+        rbTwo.setOnClickListener(this);
+        rbThree.setOnClickListener(this);
+        rbFour .setOnClickListener(this);
+        rbFive .setOnClickListener(this);
+        rbSix .setOnClickListener(this);
+        rbSenve .setOnClickListener(this);
+        rbEight .setOnClickListener(this);
 
-        switch_one .setOnClickListener(this);
-        switch_two.setOnClickListener(this);
-        switch_three.setOnClickListener(this);
-        switch_four .setOnClickListener(this);
-        switch_five .setOnClickListener(this);
-        switch_six .setOnClickListener(this);
-        switch_seven .setOnClickListener(this);
-        switch_eight .setOnClickListener(this);
+//        switch_one .setOnClickListener(this);
+//        switch_two.setOnClickListener(this);
+//        switch_three.setOnClickListener(this);
+//        switch_four .setOnClickListener(this);
+//        switch_five .setOnClickListener(this);
+//        switch_six .setOnClickListener(this);
+//        switch_seven .setOnClickListener(this);
+//        switch_eight .setOnClickListener(this);
     }
     @Override
     public void onClick(View view) {
@@ -144,54 +146,54 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             case R.id.bt_exit:
                 finish();
                 break;
-            case R.id.switch_one:
-                Toast.makeText(mContex,"one", Toast.LENGTH_LONG).show();
-                break;
-            case R.id.switch_two:
-                Toast.makeText(mContex,"one", Toast.LENGTH_LONG).show();
-                break;
-            case R.id.switch_three:
-                Toast.makeText(mContex,"one", Toast.LENGTH_LONG).show();
-                break;
-            case R.id.switch_four:
-                Toast.makeText(mContex,"one", Toast.LENGTH_LONG).show();
-                break;
-            case R.id.switch_five:
-                Toast.makeText(mContex,"one", Toast.LENGTH_LONG).show();
-                break;
-            case R.id.switch_six:
-                Toast.makeText(mContex,"one", Toast.LENGTH_LONG).show();
-                break;
-            case R.id.switch_seven:
-                Toast.makeText(mContex,"one", Toast.LENGTH_LONG).show();
-                break;
-            case R.id.switch_eight:
-                Toast.makeText(mContex,"one", Toast.LENGTH_LONG).show();
-                break;
+//            case R.id.switch_one:
+//                Toast.makeText(mContex,"one", Toast.LENGTH_LONG).show();
+//                break;
+//            case R.id.switch_two:
+//                Toast.makeText(mContex,"one", Toast.LENGTH_LONG).show();
+//                break;
+//            case R.id.switch_three:
+//                Toast.makeText(mContex,"one", Toast.LENGTH_LONG).show();
+//                break;
+//            case R.id.switch_four:
+//                Toast.makeText(mContex,"one", Toast.LENGTH_LONG).show();
+//                break;
+//            case R.id.switch_five:
+//                Toast.makeText(mContex,"one", Toast.LENGTH_LONG).show();
+//                break;
+//            case R.id.switch_six:
+//                Toast.makeText(mContex,"one", Toast.LENGTH_LONG).show();
+//                break;
+//            case R.id.switch_seven:
+//                Toast.makeText(mContex,"one", Toast.LENGTH_LONG).show();
+//                break;
+//            case R.id.switch_eight:
+//                Toast.makeText(mContex,"one", Toast.LENGTH_LONG).show();
+//                break;
 
 
-            case R.id.ll_left_one:
+            case R.id.rbOne:
                 fragmentTransaction.show(fragments[0]).commit();
                 break;
-            case R.id.ll_left_two:
+            case R.id.rbTwo:
                 fragmentTransaction.show(fragments[1]).commit();
                 break;
-            case R.id.ll_left_three:
+            case R.id.rbThree:
                 fragmentTransaction.show(fragments[2]).commit();
                 break;
-            case R.id.ll_left_four:
+            case R.id.rbFour:
                 fragmentTransaction.show(fragments[3]).commit();
                 break;
-            case R.id.ll_left_five:
+            case R.id.rbFive:
                 fragmentTransaction.show(fragments[4]).commit();
                 break;
-            case R.id.ll_left_six:
+            case R.id.rbSix:
                 fragmentTransaction.show(fragments[5]).commit();
                 break;
-            case R.id.ll_left_seven:
+            case R.id.rbSenve:
                 fragmentTransaction.show(fragments[6]).commit();
                 break;
-            case R.id.ll_left_eight:
+            case R.id.rbEight:
                 fragmentTransaction.show(fragments[7]).commit();
                 break;
         }
