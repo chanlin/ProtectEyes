@@ -7,21 +7,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="150dp"
+        android:background="@mipmap/icon_protect1"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <RadioButton
+            android:id="@+id/switch_Resttime"
+            android:layout_width="66dp"
+            android:layout_height="24dp"
             android:layout_marginLeft="25dp"
             android:layout_marginTop="20dp"
-            android:text="@string/title_three"
-            android:textSize="16sp" />
+            android:background="@drawable/button_switch"
+            android:button="@null" />
 
         <TextView
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
             android:layout_marginTop="10dp"
+            android:textColor="@color/white"
             android:text="@string/title_three_hint"
             android:textSize="12sp" />
     </LinearLayout>
@@ -64,7 +67,7 @@
 
             <SeekBar
                 android:id="@+id/seekBar_learn"
-                android:layout_width="300dp"
+                android:layout_width="400dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_height="wrap_content"
                 android:max="60"
@@ -114,7 +117,7 @@
         android:layout_marginTop="20dp"
         android:background="@color/graycc" />-->
 
-    <RelativeLayout
+    <!--<RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="100dp">
 
@@ -137,7 +140,7 @@
             android:layout_marginRight="20dp"
             android:background="@drawable/button_switch"
             android:button="@null" />
-    </RelativeLayout>
+    </RelativeLayout>-->
 
     <!--<View
         android:layout_width="match_parent"

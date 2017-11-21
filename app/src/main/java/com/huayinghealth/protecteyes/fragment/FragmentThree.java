@@ -18,11 +18,12 @@ import com.huayinghealth.protecteyes.R;
  */
 public class FragmentThree extends Fragment implements View.OnClickListener {
 
-    private RadioButton btn_switch;
-
     private Boolean BT_SWITCH = false;//开关默认关闭
+    private RadioButton rb_Resttime;
+
     private static final String OnOff = "OnOff";
-    private static final String eyesightOnOff = "EyesightOnOff"; // 视力开关
+    private static final String ResttimeSwitch = "ResttimeSwitch"; // 视力开关
+
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
@@ -39,29 +40,29 @@ public class FragmentThree extends Fragment implements View.OnClickListener {
         init();
         sharedPreferences = getActivity().getSharedPreferences(OnOff, getActivity().MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        BT_SWITCH = sharedPreferences.getBoolean(eyesightOnOff, false); // 获取开关的状态
-        btn_switch.setChecked(BT_SWITCH);
+        BT_SWITCH = sharedPreferences.getBoolean(ResttimeSwitch, false); // 获取开关的状态
+        rb_Resttime.setChecked(BT_SWITCH);
     }
 
     private void init() {
-        btn_switch = (RadioButton) getView().findViewById(R.id.btn_switch);
-        btn_switch.setOnClickListener(this);
+        rb_Resttime = (RadioButton) getView().findViewById(R.id.switch_Resttime);
+        rb_Resttime.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_switch:
-                btn_switch.setChecked(BT_SWITCH ? false : true);
+            case R.id.switch_Resttime:
+                rb_Resttime.setChecked(BT_SWITCH ? false : true);
                 BT_SWITCH = BT_SWITCH ? false : true;
-                editor.putBoolean(eyesightOnOff, BT_SWITCH);
+                editor.putBoolean(ResttimeSwitch, BT_SWITCH);
                 editor.commit();
+                // 疲劳提醒开关指令
                 if (BT_SWITCH) {
                     Toast.makeText(getActivity(), "打开", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getActivity(), "关闭", Toast.LENGTH_SHORT).show();
                 }
-
                 break;
             default:
                 break;
