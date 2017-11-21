@@ -10,6 +10,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="色温调节"/>
+    <RadioButton
+        android:id="@+id/btn_switch"
+        android:layout_width="66dp"
+        android:layout_height="24dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/button_switch"
+        android:button="@null" />
     <SeekBar
         android:id="@+id/sb_colortemperature"
         android:layout_width="match_parent"

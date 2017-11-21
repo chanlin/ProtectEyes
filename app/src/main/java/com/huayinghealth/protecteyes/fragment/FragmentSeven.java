@@ -47,10 +47,19 @@ public class FragmentSeven extends Fragment implements Preference.OnPreferenceCh
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 switch (checkedId){
                     case R.id.rb_black:
-                        writeSimulateColorSpace(0);
+                        writeSimulateColorSpace(-1);
                         break;
                     case R.id.rb_white:
+                        writeSimulateColorSpace(0);
+                        break;
+                    case R.id.rb_3:
+                        writeSimulateColorSpace(2);
+                        break;
+                    case R.id.rb_4:
                         writeSimulateColorSpace(1);
+                        break;
+                    case R.id.rb_5:
+                        writeSimulateColorSpace(3);
                         break;
                 }
             }

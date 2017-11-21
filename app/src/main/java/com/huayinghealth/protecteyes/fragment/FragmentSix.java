@@ -9,17 +9,24 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.Toast;
 //import android.os.SystemProperties;
 import com.huayinghealth.protecteyes.R;
+import com.huayinghealth.protecteyes.utils.SystemShare;
 
 /**
  * Created by ChanLin on 2017/11/15.
  */
-public class FragmentSix extends Fragment {
+public class FragmentSix extends Fragment implements View.OnClickListener{
 
-    boolean cb_enable = true;
+    private RadioButton btn_switch;
+    private Boolean BT_SWITCH = false;//开关默认关闭
+    private static final String OnOff = "OnOff";
+    private static final String colorOnOff = "colorOnOff"; // 开关
+
+
     private SeekBar seekBar;
     public FragmentSix(){}
     /*public FragmentSix (boolean enable){
@@ -38,13 +45,19 @@ public class FragmentSix extends Fragment {
     }
 
     private void init(){
+        btn_switch = (RadioButton) getView().findViewById(R.id.btn_switch);
+        btn_switch.setOnClickListener(this);
+        BT_SWITCH = SystemShare.getSettingBoolean(getActivity(),colorOnOff);
+        btn_switch.setChecked(BT_SWITCH);
+
+
         seekBar = (SeekBar) getActivity().findViewById(R.id.sb_colortemperature);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
                 //Toast.makeText(getActivity(),"当前进度："+i,Toast.LENGTH_LONG).show();
                // SystemProperties.set("persist.sys.custom_bl_level",""+progress);
-                if(cb_enable){
+                if(BT_SWITCH){
                     Log.e("bluelight",String.valueOf(progress));
                     //Intent intent = new Intent("com.android.custom.update_bluelight");
                     Intent intent = new Intent("com.huaying.protecteyes.update_bluelight");
@@ -91,5 +104,33 @@ public class FragmentSix extends Fragment {
 
         int level=SystemProperties.getInt("persist.sys.custom_bl_level",50);
         seekBar.setProgress(level);*/
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_switch:
+                btn_switch.setChecked(BT_SWITCH ? false : true);
+                BT_SWITCH = BT_SWITCH ? false : true;
+                SystemShare.setSettingBoolean(getActivity(),colorOnOff,BT_SWITCH);
+                Intent intent = new Intent("com.huaying.protecteyes.update_bluelight");
+                if(BT_SWITCH){
+
+                    intent.putExtra("protect.eyes.update_bluelight_state","1");
+                    intent.putExtra("protect.eyes.update_bluelight_progress",50);
+
+
+                   // SystemProperties.set("persist.sys.custom_bl_state","1");
+                    //sendBroadcast(new Intent("com.android.custom.update_bluelight"));
+                }else{
+                    //SystemProperties.set("persist.sys.custom_bl_state","0");
+                    intent.putExtra("protect.eyes.update_bluelight_state","0");
+                    //sendBroadcast(new Intent("com.android.custom.update_bluelight"));
+                }
+                getActivity().sendBroadcast(intent);
+                break;
+            default:
+                break;
+        }
     }
 }

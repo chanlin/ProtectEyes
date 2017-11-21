@@ -21,11 +21,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="黑"/>
+            android:text="已停用"/>
         <RadioButton
             android:id="@+id/rb_white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="白"/>
+            android:text="黑白"/>
+        <RadioButton
+            android:id="@+id/rb_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="绿色弱视"/>
+
+        <RadioButton
+            android:id="@+id/rb_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="红色弱视"/>
+
+        <RadioButton
+            android:id="@+id/rb_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="蓝色弱视"/>
+
     </RadioGroup>
 </LinearLayout>
