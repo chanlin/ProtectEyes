@@ -23,7 +23,7 @@
     <string name="title_three">用眼疲劳提醒</string>
     <string name="title_three_hint">专家建议，每次使用平板不宜超过45分钟，有效的休息时间将将降低近视风险，积极做眼保健操可缓解眼部用眼压力。</string>
     <string name="learn_time">学习时长</string>
-    <string name="learn_time_hint">一段时间后将强制关闭屏幕进入休息</string>
+    <string name="learn_time_hint">在指定时间提醒用户学习太久要注意休息</string>
     <string name="rest_time">休息时长</string>
     <string name="rest_time_hint">休息一段时间后可以继续使用平板</string>
     <string name="tired_remind"></string>
