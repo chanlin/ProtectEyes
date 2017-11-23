@@ -11,7 +11,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="黑白阅读"/>
-    <RadioGroup
+    <RadioButton
+        android:id="@+id/rb_blackWhiteSwitch"
+        android:layout_width="66dp"
+        android:layout_height="24dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_switch"
+        android:button="@null" />
+    <!--<RadioGroup
         android:id="@+id/rg_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -32,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="绿色弱视"/>
-
+git
         <RadioButton
             android:id="@+id/rb_4"
             android:layout_width="wrap_content"
@@ -45,5 +53,5 @@
             android:layout_height="wrap_content"
             android:text="蓝色弱视"/>
 
-    </RadioGroup>
+    </RadioGroup>-->
 </LinearLayout>
