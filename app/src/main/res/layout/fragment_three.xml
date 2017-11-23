@@ -36,149 +36,87 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <!--<TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="15dp"
-                android:text="@string/learn_time"
-                android:textColor="@color/gray2b"
-                android:textSize="16sp" />-->
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="15dp"
-                android:text="@string/learn_time_hint"
-                android:textColor="@color/graycc"
-                android:textSize="12sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="学习时长:"
-                    android:textColor="@color/blue37"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/tv_learntime"
-                    android:layout_width="40dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="0"
-                    android:textColor="@color/red"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="分钟"
-                    android:textColor="@color/red"
-                    android:textSize="18sp" />
-            </LinearLayout>
-
-            <SeekBar
-                android:id="@+id/seekBar_learn"
-                style="@style/Widget.SeekBar.Normal"
-                android:layout_width="400dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:max="60"
-                android:progress="30"
-                android:splitTrack="false"
-                android:thumbOffset="0dp" />
-        </LinearLayout>
-
-        <!--<LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:text="@string/rest_time"
-                android:textColor="@color/gray2b"
-                android:textSize="16sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/rest_time_hint"
-                android:textColor="@color/graycc"
-                android:textSize="12sp" />
-
-            <SeekBar
-                android:id="@+id/seekBar_rest"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp" />
-        </LinearLayout>-->
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/graycc" />
-
-    <!--<View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="20dp"
-        android:background="@color/graycc" />-->
-
-    <!--<RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="100dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/learn_time_hint"
+            android:textColor="@color/graycc"
+            android:textSize="12sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:text="@string/rest_time_back"
-            android:textColor="@color/gray"
-            android:textSize="16sp" />
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
 
-        <RadioButton
-            android:id="@+id/btn_switch"
-            android:layout_width="66dp"
-            android:layout_height="24dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/button_switch"
-            android:button="@null" />
-    </RelativeLayout>-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="学习时长:"
+                android:textColor="@color/blue37"
+                android:textSize="18sp" />
 
-    <!--<View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/graycc" />-->
+            <TextView
+                android:id="@+id/tv_learntime"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="0"
+                android:textColor="@color/red"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="分钟"
+                android:textColor="@color/red"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <SeekBar
+            android:id="@+id/seekBar_learn"
+            style="@style/Widget.SeekBar.Normal"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:max="60"
+            android:splitTrack="false"
+            android:thumbOffset="0dp" />
+
+        <RelativeLayout
+            android:layout_width="430dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="0分钟"
+                android:textColor="@color/blue37"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:text="60分钟"
+                android:textColor="@color/blue37"
+                android:textSize="18sp" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/graycc" />
+    </LinearLayout>
 </LinearLayout>

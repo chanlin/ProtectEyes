@@ -31,10 +31,11 @@ public class FragmentThree extends Fragment implements View.OnClickListener {
     private static final String ResttimeSwitch = "ResttimeSwitch"; // 视力开关
     private static final String LearnTime = "LearnTime"; // 学习时长
 
-    private int learntime = 30;
+    private int learntime = 0;
 
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
+    Intent vp_service;
 
     @Nullable
     @Override
@@ -45,6 +46,8 @@ public class FragmentThree extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        vp_service = new Intent(getActivity(), RestRemindService.class);
+        vp_service.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         init();
         sharedPreferences = getActivity().getSharedPreferences(OnOff, getActivity().MODE_PRIVATE);
@@ -53,7 +56,8 @@ public class FragmentThree extends Fragment implements View.OnClickListener {
         learntime = sharedPreferences.getInt(LearnTime, 0);
         rb_Resttime.setChecked(BT_SWITCH);
         tv_learntime.setText(learntime + "");
-        seekBar_long.setEnabled(BT_SWITCH);
+        seekBar_long.setProgress(learntime);
+//        seekBar_long.setEnabled(BT_SWITCH);
     }
 
     private void init() {
@@ -66,6 +70,7 @@ public class FragmentThree extends Fragment implements View.OnClickListener {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) { //在拖动中会调用此方法
                 tv_learntime.setText(progress + "");
+                learntime = progress;
             }
 
             @Override
@@ -76,7 +81,12 @@ public class FragmentThree extends Fragment implements View.OnClickListener {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) { // 停止拖动时调用
                 // 保存到数据
-
+                editor.putInt(LearnTime, learntime);
+                editor.commit();
+                if (BT_SWITCH){
+                    getActivity().stopService(vp_service);
+                    getActivity().startService(vp_service);
+                }
             }
         });
     }
@@ -89,10 +99,8 @@ public class FragmentThree extends Fragment implements View.OnClickListener {
                 BT_SWITCH = BT_SWITCH ? false : true;
                 editor.putBoolean(ResttimeSwitch, BT_SWITCH);
                 editor.commit();
-                seekBar_long.setEnabled(BT_SWITCH);
+//                seekBar_long.setEnabled(BT_SWITCH);
                 // 疲劳提醒开关指令
-                Intent vp_service = new Intent(getActivity(), RestRemindService.class);
-                vp_service.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 if (BT_SWITCH) {
                     Toast.makeText(getActivity(), "打开", Toast.LENGTH_SHORT).show();
                     getActivity().startService(vp_service);

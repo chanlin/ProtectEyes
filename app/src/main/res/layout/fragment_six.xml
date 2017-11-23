@@ -2,26 +2,52 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@mipmap/icon_protect1"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/btn_switch"
+            android:layout_width="66dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/button_switch"
+            android:button="@null" />
+
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="10dp"
+            android:text="打开后拖动色温调节可以调节进度条到合适的屏幕色温位置,保护眼睛"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+    </LinearLayout>
+
     <TextView
-        android:paddingTop="@dimen/padding_50"
-        android:layout_marginBottom="@dimen/align_10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="色温调节"/>
-    <RadioButton
-        android:id="@+id/btn_switch"
-        android:layout_width="66dp"
-        android:layout_height="24dp"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/button_switch"
-        android:button="@null" />
+        android:layout_marginLeft="20dp"
+        android:paddingTop="30dp"
+        android:text="请拖动进度条调节屏幕色温"
+        android:textColor="@color/graycc"
+        android:textSize="12sp" />
+
     <SeekBar
         android:id="@+id/sb_colortemperature"
+        style="@style/Widget.SeekBar.Normal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:max="100"/>
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:max="100"
+        android:splitTrack="false" />
 </LinearLayout>
