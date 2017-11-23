@@ -15,16 +15,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityManager;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.huayinghealth.protecteyes.R;
+import com.huayinghealth.protecteyes.utils.SystemShare;
 
 /**
  * Created by ChanLin on 2017/11/15.
  */
 public class FragmentSeven extends Fragment implements Preference.OnPreferenceChangeListener {
 
-    private RadioGroup rg_color;
+
+    private Boolean BT_SWITCH = false;//开关默认关闭
+    //private RadioGroup rg_color;
+    private RadioButton rb_blackWhiteSwitch;
+
+    private static final String blackWhiteSwitch = "blackWhiteSwitch"; // 黑白开关
 
     @Nullable
     @Override
@@ -35,13 +42,29 @@ public class FragmentSeven extends Fragment implements Preference.OnPreferenceCh
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        BT_SWITCH = SystemShare.getSettingBoolean(getActivity(),blackWhiteSwitch); // 获取开关的状态
+
         init();
     }
     private void init(){
 
+        rb_blackWhiteSwitch = (RadioButton) getActivity().findViewById(R.id.rb_blackWhiteSwitch);
+         rb_blackWhiteSwitch.setChecked(BT_SWITCH);
+        rb_blackWhiteSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rb_blackWhiteSwitch.setChecked(BT_SWITCH ? false : true);
+                BT_SWITCH = BT_SWITCH ? false : true;
+                SystemShare.setSettingBoolean(getActivity(),blackWhiteSwitch,BT_SWITCH);
+                if (BT_SWITCH){
+                    writeSimulateColorSpace(0);
+                }else {
+                    writeSimulateColorSpace(-1);
+                }
+            }
+        });
 
-
-        rg_color = (RadioGroup) getActivity().findViewById(R.id.rg_color);
+       /* rg_color = (RadioGroup) getActivity().findViewById(R.id.rg_color);
         rg_color.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
@@ -63,7 +86,7 @@ public class FragmentSeven extends Fragment implements Preference.OnPreferenceCh
                         break;
                 }
             }
-        });
+        });*/
 
     }
     /*private void updateSimulateColorSpace() {
