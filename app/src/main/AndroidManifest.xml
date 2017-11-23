@@ -109,6 +109,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service
+            android:name=".VisionProtectionService"
+            android:enabled="true"
+            android:process="system" />
+        <service android:name=".RestRemindService"/>
     </application>
 
 </manifest>

@@ -37,8 +37,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_weight="1"
         android:orientation="horizontal">
 
@@ -51,14 +51,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_two"
+                android:textColor="@color/blue37"
                 android:textSize="16sp" />
 
             <TextView
@@ -80,8 +81,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_weight="1"
         android:orientation="horizontal">
 
@@ -94,14 +95,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Experts_read"
+                android:textColor="@color/blue37"
                 android:textSize="16sp" />
 
             <TextView
@@ -124,8 +126,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_weight="1"
         android:orientation="horizontal">
 
@@ -138,14 +140,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Simulation_experience"
+                android:textColor="@color/blue37"
                 android:textSize="16sp" />
 
             <TextView
