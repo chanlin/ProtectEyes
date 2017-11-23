@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
-        android:text="第二节 挤按眼明穴"
+        android:text="第一节  揉天应穴"
         android:textColor="@color/blue37"
         android:textSize="18sp" />
 
@@ -25,7 +25,7 @@
 
     </android.support.v4.view.ViewPager>
 
-    <Button
+    <!--<Button
         android:id="@+id/btn_Play"
         android:layout_width="66dp"
         android:layout_height="24dp"
@@ -35,23 +35,24 @@
         android:gravity="center"
         android:text="播放"
         android:textColor="@color/white"
-        android:textSize="18sp" />
+        android:textSize="18sp" />-->
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
-        android:text="眼保健操"
+        android:text="动作要领"
         android:textColor="@color/blue37"
         android:textSize="18sp" />
 
     <TextView
+        android:id="@+id/tv_operate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="5dp"
-        android:text="        在已设置好的时间钟，如刀休息时间，将播放眼保健操；关于眼保健操，根据中医经络理论，通过按摩穴位起到通经活络，改善眼部血液循环，以达到维护视力/防止近视的作用，对治疗假性近视也大有益处。"
+        android:text="        以左右大拇指罗纹面接左右眉头下面的上眶角处。其他四指散开弯曲如弓状，支在前额上，按探面不要大"
         android:textColor="@color/gray2b"
         android:textSize="12sp" />
     <!--
