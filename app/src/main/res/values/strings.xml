@@ -14,7 +14,7 @@
 
     <!--fragment_two-->
     <string name="title_two">光线感应</string>
-    <string name="title_two_hint">当环境光过亮或者过暗，例如躲着被窝里或者太阳光直射下均不能使用。</string>
+    <string name="title_two_hint">当环境光过亮或者过暗，例如躲着被窝里或者太阳光直射下自动调节到合适的亮度。</string>
     <string name="Light_protect">光线感应</string>
     <string name="Experts_read_two">强光会使眼睛疲劳、头昏、眼花，长时间直视强光会伤害视网膜。而长时间处于暗光环境下会引起眼球的屈光度增大，增加眼睛疲劳，引起近视。</string>
     <string name="Simulation_experience_two">打开平板的手电筒对着摄像头照射或者拿着一张黑色卡片放置摄像头前方即可体验哦。</string>

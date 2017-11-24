@@ -31,7 +31,7 @@ public class FragmentThree extends Fragment implements View.OnClickListener {
     private static final String ResttimeSwitch = "ResttimeSwitch"; // 视力开关
     private static final String LearnTime = "LearnTime"; // 学习时长
 
-    private int learntime = 0;
+    private int learntime = 45;
 
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -53,7 +53,7 @@ public class FragmentThree extends Fragment implements View.OnClickListener {
         sharedPreferences = getActivity().getSharedPreferences(OnOff, getActivity().MODE_PRIVATE);
         editor = sharedPreferences.edit();
         BT_SWITCH = sharedPreferences.getBoolean(ResttimeSwitch, false); // 获取开关的状态
-        learntime = sharedPreferences.getInt(LearnTime, 0);
+        learntime = sharedPreferences.getInt(LearnTime, 45);
         rb_Resttime.setChecked(BT_SWITCH);
         tv_learntime.setText(learntime + "");
         seekBar_long.setProgress(learntime);

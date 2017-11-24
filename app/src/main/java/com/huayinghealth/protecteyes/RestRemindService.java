@@ -1,5 +1,6 @@
 package com.huayinghealth.protecteyes;
 
+import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,9 +19,10 @@ import java.util.TimerTask;
 /**
  * Created by Administrator on 2017/11/22.
  */
-public class RestRemindService extends Service{
+public class RestRemindService extends Service {
 
-    RestRemindDialog dialog;
+//    RestRemindDialog dialog;
+    AlertDialog dialog;
     private static final String OnOff = "OnOff";
     private static final String LearnTime = "LearnTime"; // 学习时长
 
@@ -32,11 +34,12 @@ public class RestRemindService extends Service{
     final Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (dialog == null){
+            if (dialog == null) {
                 CreateDialog();
-            } else {
-                dialog.cancel();
-                CreateDialog();
+            } else if (dialog != null) {
+                if (!dialog.isShowing()){
+                    CreateDialog();
+                }
             }
         }
     };
@@ -63,7 +66,7 @@ public class RestRemindService extends Service{
         learntime = sharedPreferences.getInt(LearnTime, 0);
         Log.e("learntime=", learntime + "");
 //        timer.schedule(task,longtime * 60 * 1000); //延时1000ms后执行，1000ms执行一次
-        if (learntime != 0){
+        if (learntime != 0) {
             timer.schedule(task, learntime * 1000 * 60, learntime * 1000 * 60);
         }
     }
@@ -75,7 +78,9 @@ public class RestRemindService extends Service{
     }
 
     private void CreateDialog() {
-        dialog = new RestRemindDialog(getBaseContext());
+//        dialog = new RestRemindDialog(getBaseContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getBaseContext());
+        dialog = builder.create();
         dialog.setCanceledOnTouchOutside(false);
         dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         dialog.show();

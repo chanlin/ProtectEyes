@@ -2,23 +2,34 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingTop="@dimen/padding_50"
-    android:paddingLeft="@dimen/padding_50">
+    android:orientation="vertical">
 
     <TextView
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="黑白阅读"/>
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
+        android:text="可以在观看电子书时打开，更舒适的阅读方式"
+        android:textColor="@color/graycc"
+        android:textSize="12sp" />
+
     <RadioButton
         android:id="@+id/rb_blackWhiteSwitch"
         android:layout_width="66dp"
         android:layout_height="24dp"
-        android:layout_marginLeft="25dp"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/button_switch"
         android:button="@null" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/graycc" />
     <!--<RadioGroup
         android:id="@+id/rg_color"
         android:layout_width="match_parent"

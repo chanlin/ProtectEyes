@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="1">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
             android:layout_marginTop="10dp"
-            android:text="打开后拖动色温调节可以调节进度条到合适的屏幕色温位置,保护眼睛"
+            android:text="打开后拖动进度条可以调节屏幕的色温,更好地保护眼睛"
             android:textColor="@color/white"
             android:textSize="12sp" />
     </LinearLayout>
@@ -49,5 +50,39 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
         android:max="100"
+        android:progress="50"
         android:splitTrack="false" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="冷淡"
+            android:textColor="@color/blue37"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:text="温暖"
+            android:textColor="@color/blue37"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/graycc" />
 </LinearLayout>

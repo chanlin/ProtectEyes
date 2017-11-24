@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.huayinghealth.protecteyes.R;
@@ -26,6 +27,9 @@ public class FragmentEight extends Fragment {
     private View img1, img2, img3, img4;
     private FragmentPagerAdapter adapter;
     private TextView tx_eight_title, tv_operate;
+
+    final ArrayList<View> list = new ArrayList();
+    private LinearLayout lean;
 
     @Nullable
     @Override
@@ -44,12 +48,13 @@ public class FragmentEight extends Fragment {
         tv_operate = (TextView) getActivity().findViewById(R.id.tv_operate);
 
         viewPager = (ViewPager) getActivity().findViewById(R.id.vp_eight_imgs);
+        lean = (LinearLayout) getActivity().findViewById(R.id.ll_dot);
         LayoutInflater inflater = getActivity().getLayoutInflater();
         img1 = inflater.inflate(R.layout.eight_img1, null);
         img2 = inflater.inflate(R.layout.eight_img2, null);
         img3 = inflater.inflate(R.layout.eight_img3, null);
         img4 = inflater.inflate(R.layout.eight_img4, null);
-        final ArrayList<View> list = new ArrayList();
+
         list.add(img1);
         list.add(img2);
         list.add(img3);
@@ -78,6 +83,7 @@ public class FragmentEight extends Fragment {
             }
         };
         viewPager.setAdapter(pagerAdapter);
+        initdot();
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -86,6 +92,16 @@ public class FragmentEight extends Fragment {
 
             @Override
             public void onPageSelected(int position) {
+                int count = lean.getChildCount();
+                for (int i = 0; i < count; i++) {
+                    View view = lean.getChildAt(i);
+//                    view.setEnabled(i == position ? false : true);
+                    if(i == position){
+                        view.setBackgroundResource(R.mipmap.icon_smalldot_press);
+                    }else {
+                        view.setBackgroundResource(R.mipmap.icon_smalldot);
+                    }
+                }
                 switch (position) {
                     case 0:
                         tx_eight_title.setText("第一节  揉天应穴");
@@ -111,5 +127,19 @@ public class FragmentEight extends Fragment {
 
             }
         });
+    }
+
+    private void initdot() {
+        for (int i = 0; i < list.size(); i++) {
+            View view = new View(getActivity());
+            view.setBackgroundResource(R.mipmap.icon_smalldot);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(30, 30);
+            params.rightMargin = 10;
+            lean.addView(view, params);
+            view.setTag(i);
+        }
+        View view = lean.getChildAt(0);
+//        view.setEnabled(false);
+        view.setBackgroundResource(R.mipmap.icon_smalldot_press);
     }
 }

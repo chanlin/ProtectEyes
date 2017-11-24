@@ -82,7 +82,7 @@
         <SeekBar
             android:id="@+id/seekBar_learn"
             style="@style/Widget.SeekBar.Normal"
-            android:layout_width="400dp"
+            android:layout_width="420dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
@@ -91,7 +91,7 @@
             android:thumbOffset="0dp" />
 
         <RelativeLayout
-            android:layout_width="430dp"
+            android:layout_width="420dp"
             android:layout_height="30dp"
             android:layout_gravity="center_horizontal">
 
@@ -99,24 +99,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="0分钟"
+                android:text="0 分钟"
                 android:textColor="@color/blue37"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:text="60分钟"
+                android:text="60 分钟"
                 android:textColor="@color/blue37"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp"
             android:background="@color/graycc" />
     </LinearLayout>
 </LinearLayout>
