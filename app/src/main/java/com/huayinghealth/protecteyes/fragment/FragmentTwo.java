@@ -58,7 +58,7 @@ public class FragmentTwo extends Fragment implements View.OnClickListener {
                 rb_LightProtect.setChecked(BT_SWITCH ? false : true);
                 BT_SWITCH = BT_SWITCH ? false : true;
                 SystemShare.setSettingBoolean(getActivity(),brightness_mode_switch, BT_SWITCH);
-                // 疲劳提醒开关指令
+                // 光线感应开关指令
                 if (BT_SWITCH) {
                     Toast.makeText(getActivity(), "打开", Toast.LENGTH_SHORT).show();
                 } else {
