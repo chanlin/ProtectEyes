@@ -1,8 +1,13 @@
 package com.huayinghealth.protecteyes.fragment;
 
 
+import android.app.ActivityManager;
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,18 +19,20 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.huayinghealth.protecteyes.R;
+import com.huayinghealth.protecteyes.VisionProtectionService;
 import com.huayinghealth.protecteyes.utils.SystemShare;
+
+import java.util.List;
 
 /**
  * Created by ChanLin on 2017/11/15.
  */
 public class FragmentFour extends Fragment implements View.OnClickListener {
 
-    private Boolean BT_SWITCH = false;//开关默认关闭
+    public static Boolean BT_FANZAN_SWITCH = false;//开关默认关闭
     private RadioButton rb_Reversal;
 
     private static final String OnOff = "OnOff";
-    private static final String ReversalSwitch = "ReversalSwitch"; // 视力开关
 
     @Nullable
     @Override
@@ -37,8 +44,8 @@ public class FragmentFour extends Fragment implements View.OnClickListener {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         init();
-        BT_SWITCH = SystemShare.getSettingBoolean(getActivity().getApplicationContext(),ReversalSwitch, false); // 获取开关的状态
-        rb_Reversal.setChecked(BT_SWITCH);
+        BT_FANZAN_SWITCH = SystemShare.getSettingBoolean(getActivity().getApplicationContext(),SystemShare.ReversalSwitch, false); // 获取开关的状态
+        rb_Reversal.setChecked(BT_FANZAN_SWITCH);
     }
 
     private void init() {
@@ -48,19 +55,24 @@ public class FragmentFour extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent("com.ProtectEyes.fragmentfour.ReversalSwitch");
+        
         switch (v.getId()){
             case R.id.switch_Reversal:
-                rb_Reversal.setChecked(BT_SWITCH ? false : true);
-                BT_SWITCH = BT_SWITCH ? false : true;
-                SystemShare.setSettingBoolean(getActivity().getApplicationContext(),ReversalSwitch, BT_SWITCH);
-                intent.putExtra("Reversal", BT_SWITCH);
+				
+                rb_Reversal.setChecked(BT_FANZAN_SWITCH ? false : true);
+                BT_FANZAN_SWITCH = BT_FANZAN_SWITCH ? false : true;
+                SystemShare.setSettingBoolean(getActivity().getApplicationContext(),SystemShare.ReversalSwitch, BT_FANZAN_SWITCH);
+                
+				Intent intent = new Intent(SystemShare.REVERSAL_INTENT_NAME);
+				intent.putExtra(SystemShare.REVERSAL_INTENT_STATUS, BT_FANZAN_SWITCH);
                 getActivity().sendBroadcast(intent);
                 // 反转提醒开关指令
-                if (BT_SWITCH) {
-//                    Toast.makeText(getActivity(), "打开", Toast.LENGTH_SHORT).show();
+                if (BT_FANZAN_SWITCH) {
+                    Log.e("sendbroadcast", "--luwl_apk--open fanzan func");
+                    Toast.makeText(getActivity(), "打开", Toast.LENGTH_SHORT).show();
                 } else {
-//                    Toast.makeText(getActivity(), "关闭", Toast.LENGTH_SHORT).show();
+                    Log.e("sendbroadcast", "--luwl_apk--close fanzan func");
+                    Toast.makeText(getActivity(), "关闭", Toast.LENGTH_SHORT).show();
                 }
                 break;
             default:

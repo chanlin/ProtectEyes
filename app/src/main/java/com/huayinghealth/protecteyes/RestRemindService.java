@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.WindowManager;
 
 import com.huayinghealth.protecteyes.dialog.RestRemindDialog;
+import com.huayinghealth.protecteyes.utils.SystemShare;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -23,13 +24,9 @@ public class RestRemindService extends Service {
 
 //    RestRemindDialog dialog;
     AlertDialog dialog;
-    private static final String OnOff = "OnOff";
-    private static final String LearnTime = "LearnTime"; // 学习时长
 
     private int learntime = 0;
 
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
 
     final Handler handler = new Handler() {
         public void handleMessage(Message msg) {
@@ -62,8 +59,8 @@ public class RestRemindService extends Service {
     public void onCreate() {
         super.onCreate();
         Log.e("RestRemindService", "onCreat");
-        sharedPreferences = getBaseContext().getSharedPreferences(OnOff, getBaseContext().MODE_PRIVATE);
-        learntime = sharedPreferences.getInt(LearnTime, 0);
+        learntime = SystemShare.getSettingInt(getBaseContext(),SystemShare.LearnTime,45);
+
         Log.e("learntime=", learntime + "");
 //        timer.schedule(task,longtime * 60 * 1000); //延时1000ms后执行，1000ms执行一次
         if (learntime != 0) {

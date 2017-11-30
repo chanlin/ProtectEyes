@@ -2,6 +2,7 @@ package com.huayinghealth.protecteyes.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.provider.Settings;
 
 /**
  * Created by ChanLin on 2017/11/20.
@@ -15,6 +16,18 @@ public class SystemShare {
     public static String sixEnable = "sixEnable";
     public static String sixProgress = "sixProgress";
 
+    public static final String EyeProtectSwitch = "EyeProtectSwitch"; // 视力开关
+    public static final String ReversalSwitch = "ReversalSwitch"; // 视力开关
+    public static final String ResttimeSwitch = "ResttimeSwitch";//第三个开关
+    public static final String LearnTime = "LearnTime";//第三个 时间
+    public static final String ShakeRemindSwitch = "ShakeRemindSwitch"; // 抖动开关
+
+    public static final String PSENSOR_INTENT_NAME = "com.ProtectEyes.fragmentone.PsensorSwitch";
+    public static final String PSENSOR_INTENT_STATUS = "PsensorStatus";
+    public static final String REVERSAL_INTENT_NAME = "com.ProtectEyes.fragmentfour.ReversalSwitch";
+    public static final String REVERSAL_INTENT_STATUS = "ReversalStatus";
+    public static final String DOUDO_INTENT_NAME = "com.ProtectEyes.fragmentfive.DoudoSwitch";
+    public static final String DOUDO_INTENT_STATUS = "DoudoStatus";
     /**
      * 保存String类型数据
      *
@@ -111,8 +124,36 @@ public class SystemShare {
     public static int getSettingInt(Context context, String strKey) {
         SharedPreferences clientPreferences = context.getSharedPreferences(
                 PREFIX_NAME, Context.MODE_MULTI_PROCESS);
-        int value = clientPreferences.getInt(strKey, 0);
+        int value = clientPreferences.getInt(strKey, 1);
         return value;
+    }
+    public static int getSettingInt(Context context, String strKey,int time) {
+        SharedPreferences clientPreferences = context.getSharedPreferences(
+                PREFIX_NAME, Context.MODE_MULTI_PROCESS);
+        int value = clientPreferences.getInt(strKey, time);
+        return value;
+    }
+    /**
+     * 获取int类型数据
+     *
+     * @param context
+     */
+    public static int getsPrefValue(Context context, String strStatus, String strKey) {
+        SharedPreferences sPref = context.getSharedPreferences(strStatus, Context.MODE_PRIVATE);
+        return sPref.getInt(strKey, 0);
+    }
+
+    /**
+     * 保存int类型数据
+     *
+     * @param context
+     * @param value
+     */
+    public static void setsPrefValue(Context context, String strStatus, String strKey, int value) {
+        SharedPreferences sPref = context.getSharedPreferences(strStatus, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sPref.edit();
+        editor.putInt(strKey, value);
+        editor.commit();
     }
 
 }

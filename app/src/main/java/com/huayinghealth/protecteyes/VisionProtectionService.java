@@ -29,7 +29,10 @@ import android.view.KeyEvent;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
-
+import android.widget.Toast;
+import com.huayinghealth.protecteyes.fragment.FragmentFour;
+import com.huayinghealth.protecteyes.fragment.FragmentOne;
+import com.huayinghealth.protecteyes.fragment.FragmentFive;
 import com.huayinghealth.protecteyes.utils.SystemShare;
 
 import java.util.ArrayList;
@@ -48,18 +51,42 @@ public class VisionProtectionService extends Service {
     AlertDialog dialog;
 	private int num1 =2;
 	private boolean mTimerIsRunning = false;
-	private boolean dismiss_from_close = false;
 	private boolean dismiss_when_not_fit_status = false;
-	private ImageView vp_animation;
+	private boolean dismiss_Acc_Fanzan_when_not_fit_status = false;
+	private ImageView vp_animation; 
 	private static SoundPool soundPoollight = null;
 	private static HashMap<String, Integer> soundPoolMaplight;
 	private AnimationDrawable animationDrawable;
 	private int mPresentPlayId;
 	private static String AUDIO_VISION_PROTECTION_OPEN="AUDIO_VISION_PROTECTION_OPEN";
+	private static String AUDIO_FANZAN_PROTECTION_OPEN="AUDIO_FANZAN_PROTECTION_OPEN";
 	private static final String AUDIO_VISION_PROTECTION_PATH = "/system/media/audio/notifications/audio_vision_protection.mp3";
+	private static final String AUDIO_FANZAN_PROTECTION_PATH = "/system/media/audio/notifications/audio_fanzan_wainning.mp3";
 	//private static final String AUDIO_VISION_PROTECTION_PATH = "/system/media/audio/notifications/audio_vision_protection.wav";
 
+	private boolean Psensor_switch = false;
+	private boolean Reversal_switch = false;
+	private boolean Doudo_switch = false;
+
+	float sensorProximityValue=0f;
+	float sensorProximityValueOld=1f;
+	int sensorAccFanzanValue = 0;
+	int sensorAccFanzanValueOld = 1;
+	int ps_orientation =0;
+	int ps_orientation_old=1;
+	int eye_protect_sound_select = 0;  // 1 : ps protect   2: fanzan proteck
 	private boolean b = false;
+
+	boolean isDirectionUp = false;
+	int continueUpCount = 0;
+	int continueUpFormerCount = 0;
+	boolean lastStatus = false;
+	float peakOfWave = 0;
+	float valleyOfWave = 0;
+	float gravityOld = 0;
+	int peak_num=0;
+	int phone_in_doudo_status = 0;
+	int phone_in_doudo_stop_counter = 0;
 
 	public IBinder onBind(Intent intent){
 
@@ -71,24 +98,38 @@ public class VisionProtectionService extends Service {
 		mContext = getBaseContext();
 		lightLoadingAudio();
 		Log.d(TAG,"------on create VisionProtectionService--------");
+		getState();
 		registerReceiver();
 	}
-
-	@Override
+	private void getState(){
+		Psensor_switch = SystemShare.getSettingBoolean(mContext,SystemShare.EyeProtectSwitch,false);
+		Reversal_switch = SystemShare.getSettingBoolean(mContext,SystemShare.ReversalSwitch,false);
+		Doudo_switch = SystemShare.getSettingBoolean(mContext,SystemShare.ShakeRemindSwitch,false);
+	}
+	 @Override
 		 public void onDestroy() {
 		  super.onDestroy();
 		  //soundPoollight.release() ;
-//		 animationDrawable = (AnimationDrawable) vp_animation.getDrawable();
-//		 animationDrawable.stop();
-		 soundPoollight.stop(mPresentPlayId);
-//		 dialog.dismiss();
-		 mTimerIsRunning = false;
-		 num1 =2;
-		 dismiss_from_close = false;
-		 enable_ps(false);
-		 Log.e("onDestroy", "distory");
+		  if(vp_animation!=null)
+		  {
+		    animationDrawable = (AnimationDrawable) vp_animation.getDrawable();
+		    animationDrawable.stop();
+		  }
+		  if(soundPoollight!=null)
+		  {
+			soundPoollight.stop(mPresentPlayId);
+			soundPoollight.release() ;
+		  }
+		  
+			if(dialog!=null)
+			{
+				dialog.dismiss();
+			}
+			mTimerIsRunning = false;	
+			num1 =2;
+		    enable_ps(false);
 		 }
-	public int onStartCommand(Intent intent, int flags, int startId){
+	public int onStartCommand(Intent intent,int flags,int startId){
 		//wbin add
 	final boolean visionProtectionEnabled = Settings.Secure.getInt(getContentResolver(),
                 "vision protection", 0) != 0;
@@ -103,32 +144,13 @@ public class VisionProtectionService extends Service {
 		mManager=(SensorManager)getSystemService(Context.SENSOR_SERVICE);
 		if(enable){
 			mManager.registerListener(sensorEventListener, mManager.getDefaultSensor(Sensor.TYPE_PROXIMITY), SensorManager.SENSOR_DELAY_NORMAL);
+			mManager.registerListener(sensorEventListener, mManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
 			Log.e("wzb","2222");
 		}else{
 			mManager.unregisterListener(sensorEventListener);
 			Log.e("wzb","3333");
 		}
 	}
-	
-//	void rphone_open_PS()
-//	{
-//		Log.e("wzb"," rphone_open_PS");
-//		int cmd[]={300,1};
-//				MyLib ml= new MyLib();
-//				ml.setGpioMode(cmd);
-//
-//	}
-//	void rphone_close_PS()
-//	{
-//		Log.e("wzb"," rphone_close_PS");
-//		int cmd[]={301,1};
-//				MyLib ml= new MyLib();
-//				ml.setGpioMode(cmd);
-//	}
-	float sensorProximityValue=0f;
-	float sensorProximityValueOld=1f;
-	int ps_orientation =0;
-	int ps_orientation_old=1;
 	
 	public static List getLauncherPackageName(Context context) {
 		List packageNames = new ArrayList();
@@ -145,130 +167,178 @@ public class VisionProtectionService extends Service {
 	public boolean isLauncher(Context context) {
 		ActivityManager mActivityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
 		List<RunningTaskInfo> rti = mActivityManager.getRunningTasks(1);
-		String topPackageName = rti.get(0).topActivity.getPackageName();
-		//List launcherName = getLauncherPackageName(context);
+		String topPackageName=null;
+		if(rti.size()!=0)
+		{
+			topPackageName= rti.get(0).topActivity.getPackageName();
+		}
 		Log.i("weibin", "topPackageName =" + topPackageName);
-		//Log.i("weibin", "launcherName =" + launcherName);
-		//if (launcherName != null && launcherName.size() != 0) {
-		//	for (int i = 0; i < launcherName.size(); i ++) {
-				if ("com.android.launcher3".equals(topPackageName) || "com.hy.launcher3".equals(topPackageName)) {
+			if(topPackageName !=null)
+			{
+				if ("com.android.launcher3".equals(topPackageName)||"com.hy.launcher3".equals(topPackageName)) {
 					return true;
 				}
-		//	}
-		//}
+			}
 		return false;
 	}
+
+	Handler mHandler_doudo = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			// TODO Auto-generated method stub
+			super.handleMessage(msg);
+			switch (msg.what) {
+				case 9999:
+					Log.e("wzb","999 peak num="+peak_num + " phone_in_doudo_status" + phone_in_doudo_status);
+					if((peak_num >= 4) && (phone_in_doudo_status == 0)){
+						Toast.makeText(mContext, "检测到颠簸!!!", Toast.LENGTH_SHORT).show();
+						handler.sendEmptyMessage(0);
+						lightplayAuio(AUDIO_VISION_PROTECTION_OPEN);
+						phone_in_doudo_status = 1;
+						//这里触发检测到抖动.可以发送一个广播,然后app接收到广播后做相应的界面提示
+					}
+					peak_num=0;
+					break;
+				default:
+					break;
+			}
+		}
+	};
+
+	private void parse_acc_data(float f){
+		if(gravityOld==0){
+			gravityOld=f;
+		}else{
+			if(detectorPeak(f, gravityOld)){
+				Log.e("wzb","peak f="+gravityOld);
+				phone_in_doudo_stop_counter = 0;
+				peak_num++;
+				if(peak_num==1){
+					mHandler_doudo.sendEmptyMessageDelayed(9999, 2000);
+				}
+				Log.e("wzb","peak_num="+peak_num);
+
+			}else {
+				if(phone_in_doudo_status == 1){
+					phone_in_doudo_stop_counter++;
+						Log.e("wzb","peak phone_in_doudo_stop_counter=" + phone_in_doudo_stop_counter);
+						if(phone_in_doudo_stop_counter > 20) {
+							phone_in_doudo_stop_counter = 0;
+						phone_in_doudo_status = 0;
+						dismiss_animationDrawable_dialog();
+					}
+				}
+			}
+		}
+		gravityOld=f;
+
+	}
+
+	public boolean detectorPeak(float newValue, float oldValue) {
+		lastStatus = isDirectionUp;
+		if (newValue >= oldValue) {
+			isDirectionUp = true;
+			continueUpCount++;
+		} else {
+			continueUpFormerCount = continueUpCount;
+			continueUpCount = 0;
+			isDirectionUp = false;
+		}
+
+		if (!isDirectionUp && lastStatus && (continueUpFormerCount >= 1 && oldValue >= 120)) {
+			peakOfWave = oldValue;
+			return true;
+		} else if (!lastStatus && isDirectionUp) {
+			valleyOfWave = oldValue;
+			return false;
+		} else {
+			return false;
+		}
+	}
+
 	private SensorEventListener sensorEventListener = new SensorEventListener() {
 		   @Override
 		   public void onSensorChanged(SensorEvent sensorEvent) {
-			   boolean a = SystemShare.getSettingBoolean(getApplicationContext(),"EyeProtectSwitch");
-
-//			   boolean b = SystemShare.getSettingBoolean(getApplicationContext(),"ReversalSwitch");
-			   Log.e("sensorlistener", "a = " + a + "  b=" + b);
-		       if(sensorEvent.sensor.getType() == Sensor.TYPE_PROXIMITY){
-		           sensorProximityValue = sensorEvent.values[0];
-		       }
-					//Log.e("luwl"," --luwl--sensorProximityValue 1="+sensorProximityValue);
-			  PowerManager powerManager = (PowerManager) getSystemService(Service.POWER_SERVICE);
-			  if (powerManager.isScreenOn()&&(getResources().getConfiguration().orientation ==
-					Configuration.ORIENTATION_LANDSCAPE)&&!isLauncher(mContext))
-			  {
-				  if ((sensorEvent.sensor.getType() == Sensor.TYPE_PROXIMITY)) {
-
-						//Log.e("luwl"," --luwl--sensorProximityValue="+sensorProximityValue);					
-						if(sensorProximityValue==0.0) {                          
-							//Log.e("luwl"," --luwl-close-dialog="+dialog + " ps=" + sensorProximityValue);	
-							if(dialog==null)
-							{
-								//Log.e("luwl", "-11-luwl--dialog is null dialogThread will be exce now");  
-								//mTimerIsRunning = false;	
-								dialogThread(); 
+		    	PowerManager powerManager = (PowerManager) getSystemService(Service.POWER_SERVICE);
+			   Log.e("luwl"," --luwl_test- psensor=" + Psensor_switch + " reversal=" + Reversal_switch + " Doudo=" + Doudo_switch);
+			   if((sensorEvent.sensor.getType() == Sensor.TYPE_PROXIMITY) && Psensor_switch){
+		            sensorProximityValue = sensorEvent.values[0];
+			  		if (powerManager.isScreenOn()&&(getResources().getConfiguration().orientation ==
+						Configuration.ORIENTATION_LANDSCAPE)&&!isLauncher(mContext))
+			  		{
+						Log.e("luwl"," --luwl_test--sensorProximityValue="+sensorProximityValue + " old=" + sensorProximityValueOld);	
+						if(sensorProximityValue != sensorProximityValueOld) {   
+		
+							if(sensorProximityValue==0.0) {                          
 								dismiss_when_not_fit_status = false;
-								dismiss_from_close = true;
-							}
-							if(dialog!=null)
-							{
-								if(dialog.isShowing())
-								{
-									//Log.e("luwl", "-close-luwl--dialog isShowing now"); 
-									dismiss_from_close = true;
-									return;
-								}
-								else
-								{
-									//Log.e("luwl", "-22-luwl--dialog is not null dialogThread will be exce now");  
-									//mTimerIsRunning = false;
-									dismiss_when_not_fit_status = false;
-									dialogThread();
-								}
-								dismiss_from_close = true;
-							}
-						} else {  
-							//Log.e("luwl"," --luwl-away-dialog="+dialog + " ps=" + sensorProximityValue);	
-							try {  
-								if (timer != null){  
-									//Log.e("luwl", "--luwl--timer is not null,exce timer.cancel");
-									timer.cancel();
-								}
-								
-								if(dialog!=null)
-								{
-									if (dialog.isShowing())
-									{
-										Log.e("luwl", "-away-luwl--dialog isShowing now");
-									}
-									 //Log.e("luwl", "-away-luwl--cancel the vp_animation and dialog"); 
-	
-									dismiss_animationDrawable_dialog();
-								}
-							} catch (Exception e) {
-								// TODO Auto-generated catch block  
-								e.printStackTrace();  
+								eye_protect_sound_select = 1;
+								Log.e("luwl"," --luwl_test-TYPE_PROXIMITY-dialogThread start mTimerIsRunning=!!!" + mTimerIsRunning);	
+								dialogThread(); 
+							} else {  
+								dismiss_animationDrawable_dialog();
+								Log.e("luwl"," --luwl_test-TYPE_PROXIMITY-from close-dismiss_animationDrawable_dialog=");	
 							}  
-						}  
-					} 
-			  }
-			  else
-			  {
-			  	//Log.e("luwl"," --luwl-condision is not fit -dialog="+dialog);	
-				if(dialog!=null)
-					{
-
-						//Log.e("luwl","-condision-luwl--cancel the vp_animation and dialog dismiss_when_not_fit_status=" + dismiss_when_not_fit_status);	
-						if(dismiss_when_not_fit_status == false){
-							dismiss_when_not_fit_status = true;
-							dismiss_from_close = true;
-							dismiss_animationDrawable_dialog();
-							if (timer != null){  
-								Log.e("luwl", "--luwl--timer is not null,exce timer.cancel");
-								timer.cancel();
+							sensorProximityValueOld=sensorProximityValue;
+			  			}
+						
+					  }
+					  else
+					  {
+						if(dialog!=null)
+						{
+							if(dismiss_when_not_fit_status == false){
+								dismiss_when_not_fit_status = true;
+								sensorProximityValueOld = 1f;
+								dismiss_animationDrawable_dialog();
+								Log.e("luwl"," --luwl_test-TYPE_PROXIMITY-from not fit-dismiss_animationDrawable_dialog=");	
 							}
 						}
-						 
-						
+					  }
+				   }
+
+				if((sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) && Reversal_switch){
+					if (sensorEvent.values[2] < -4) {
+						sensorAccFanzanValue = 1;
+					}else{
+						sensorAccFanzanValue = 0;
 					}
-			  }
-				
-				//add by luwl start
-		       if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-				{
-					ps_orientation =1;   // S P
-				}
-				else
-				{
-					ps_orientation =0;   // H P
-				}
-				//Log.e("wzb"," orientation ="+ps_orientation + " orientation_old =" + ps_orientation_old);
-				if(ps_orientation != ps_orientation_old){
-					if(ps_orientation == 0){
-//						rphone_open_PS();
-					}
-					else{
-//						rphone_close_PS();
-					}
-				}
-				ps_orientation_old = ps_orientation;
-			   sensorProximityValueOld=sensorProximityValue;
+					
+			  		if (powerManager.isScreenOn())
+			  		{
+						Log.e("luwl"," --luwl_test--sensorAccFanzanValue="+sensorAccFanzanValue + " old=" + sensorAccFanzanValueOld);	
+						if(sensorAccFanzanValue != sensorAccFanzanValueOld) {   
+		
+							if(sensorAccFanzanValue==1) {                          
+								dismiss_Acc_Fanzan_when_not_fit_status = false;
+								eye_protect_sound_select = 2;
+								Log.e("luwl"," --luwl_test-TYPE_ACCELEROMETER-dialogThread start mTimerIsRunning=!!!" + mTimerIsRunning);	
+								dialogThread();
+							} else {  	 
+								dismiss_animationDrawable_dialog();
+								Log.e("luwl"," --luwl_test-TYPE_ACCELEROMETER from normal-dismiss_animationDrawable_dialog !!!");	
+							}  
+							sensorAccFanzanValueOld=sensorAccFanzanValue;
+			  			}
+
+						float xyz=sensorEvent.values[0]*sensorEvent.values[0]
+								+sensorEvent.values[1]*sensorEvent.values[1]
+								+sensorEvent.values[2]*sensorEvent.values[2];
+						Log.e("wzb","peak xyz="+xyz + " " + sensorEvent.values[0]+ " " + sensorEvent.values[1]+ " " + sensorEvent.values[2]);
+						parse_acc_data(xyz);
+					  }
+					  else
+					  {
+						if(dialog!=null)
+						{
+							if(dismiss_Acc_Fanzan_when_not_fit_status == false){
+								dismiss_Acc_Fanzan_when_not_fit_status = true;
+								dismiss_animationDrawable_dialog();
+								sensorAccFanzanValueOld = 0;
+								Log.e("luwl"," --luwl_test-TYPE_ACCELEROMETER from screen off-dismiss_animationDrawable_dialog !!!");	
+							}
+						}
+					  }
+				   }
 		   }
 
 		   @Override
@@ -278,40 +348,52 @@ public class VisionProtectionService extends Service {
 		};
 
 	private void dismiss_animationDrawable_dialog(){
-		Log.e("luwl","--luwl--dismiss_animationDrawable_dialog dismiss_from_close" + dismiss_from_close);
-		if(dismiss_from_close){
-			Log.e("luwl","--luwl--dismiss_animationDrawable_dialog");
-			animationDrawable = (AnimationDrawable) vp_animation.getDrawable();
-			animationDrawable.stop();
-			soundPoollight.stop(mPresentPlayId);
-			dialog.dismiss();
+
+            Log.e("luwl","--release sound close dualog mPresentPlayId " +mPresentPlayId+ " vp_animation " +vp_animation +" dialog " +dialog +" soundPoollight " +soundPoollight); 
+			if(vp_animation!=null)
+			{	
+				animationDrawable = (AnimationDrawable)vp_animation.getDrawable();
+				animationDrawable.stop();
+			}
+			if(soundPoollight!=null)
+			{
+				soundPoollight.stop(mPresentPlayId);
+			}
+			if(dialog!=null)
+			{
+				dialog.dismiss();
+			}
+			if (timer != null){  
+				timer.cancel();
+			}
 			mTimerIsRunning = false;	
 			num1 =2;
-			dismiss_from_close = false;
-		}
+			sensorAccFanzanValueOld = 0;
+			sensorProximityValueOld = 1f;
 	}
 
    private void dialogThread() { 
-	//Log.e(TAG, "--luwl--mTimerIsRunning "+mTimerIsRunning);
    if(!mTimerIsRunning)
    {
-        timer = new Timer();
-        //Log.e(TAG, "--luwl--dialogThread num "+num1);
-        TimerTask timerTask = new TimerTask() {
-            @Override
+        timer = new Timer(); 
+        TimerTask timerTask = new TimerTask() {  
+            @Override  
             public void run() {  
-                if (num1 == 0) {  
-					//Log.e(TAG, "-000-luwl--sendEmptyMessage --AUDIO_VISION_PROTECTION_OPEN");		
+                if (num1 == 0) {  	
                     timer.cancel(); 			
 					handler.sendEmptyMessage(0);
-					lightplayAuio(AUDIO_VISION_PROTECTION_OPEN);
+					if(eye_protect_sound_select == 1){
+						lightplayAuio(AUDIO_VISION_PROTECTION_OPEN);
+					}else if(eye_protect_sound_select == 2){
+						lightplayAuio(AUDIO_FANZAN_PROTECTION_OPEN);
+					}else{
+						lightplayAuio(AUDIO_VISION_PROTECTION_OPEN);
+					}
                 } else {						
-                    num1--; 
-					Log.e(TAG, "--luwl--dialogThread num --"+num1);
+                    num1--; 				
                 }  
             }  
         }; 	 
-		Log.d(TAG, "dialogThread num reset"+num1);
 		mTimerIsRunning = true;	
         timer.schedule(timerTask, 0, 1000); 				
    }		
@@ -319,42 +401,26 @@ public class VisionProtectionService extends Service {
   
     private void CreateDialog()
     {
-    	/** 
-         * 系统默认的alertDialog 
-         */  
-        Builder builder = new Builder(mContext);
+        Builder builder = new AlertDialog.Builder(mContext);  
         dialog = builder.create();
-		dialog.setCanceledOnTouchOutside(false);
+		dialog.setCanceledOnTouchOutside(false);		
         dialog.getWindow().setType(  
-                (WindowManager.LayoutParams.TYPE_SYSTEM_ALERT));
-		dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
-			@Override
-			public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-				if (keyCode == KeyEvent.KEYCODE_BACK) { //监控/拦截/屏蔽返回键
-					Log.e("onKyeDown", "KEYCODE_BACK");
-					return true;
-				} else {
-					return false;
-				}
-			}
-		});
-		dialog.setCancelable(false);
+                (WindowManager.LayoutParams.TYPE_SYSTEM_ALERT)); 
     	
     }
-    private Handler handler = new Handler() {
+    private Handler handler = new Handler() {  
   
-        @Override
-        public void handleMessage(Message msg) {
+        @Override  
+        public void handleMessage(Message msg) {  
             CreateDialog();  
             dialog.show(); 
 			Window window = dialog.getWindow();
-			window.setContentView(R.layout.vp_dialog);
-			dialog.getWindow().setLayout(1260, 600);
+			window.setContentView(R.layout.vp_dialog); 
+			dialog.getWindow().setLayout(1260, 600);  
 			vp_animation = (ImageView) dialog.findViewById(R.id.vp_animation);
 			vp_animation.setImageResource(R.drawable.vision_protection_ani);
-			animationDrawable = (AnimationDrawable) vp_animation.getDrawable();
+			animationDrawable = (AnimationDrawable) vp_animation.getDrawable();	
 			animationDrawable.start();	
-			//Log.e(TAG, "--luwl--CreateDialog animationDrawable.start");	
         }  
   
     }; 
@@ -367,8 +433,7 @@ public class VisionProtectionService extends Service {
 					Instrumentation inst = new Instrumentation();
 					inst.sendKeyDownUpSync(keyCode);
 				} catch (Exception e) {
-//					Log.e("Exception when sendPointerSync", e.toString());
-					Log.e("sendPointerSync", e.toString());
+					Log.e("Exception ", e.toString());
 				}
 			}
 		}.start();
@@ -378,6 +443,7 @@ public class VisionProtectionService extends Service {
 		soundPoollight = new SoundPool(1, AudioManager.STREAM_MUSIC, 100);
 		soundPoolMaplight = new HashMap<String, Integer>();
 		soundPoolMaplight.put(AUDIO_VISION_PROTECTION_OPEN,soundPoollight.load(AUDIO_VISION_PROTECTION_PATH, 1));
+		soundPoolMaplight.put(AUDIO_FANZAN_PROTECTION_OPEN,soundPoollight.load(AUDIO_FANZAN_PROTECTION_PATH, 2));
 
 	}
 
@@ -393,20 +459,32 @@ public class VisionProtectionService extends Service {
 			streamVolumeCurrent = streamVolumeCurrent - 500;
 		}
 		float volume = streamVolumeCurrent / streamVolumeMax;
-		mPresentPlayId=soundPoollight.play(soundPoolMaplight.get(audioFile), 1.0f, 1.0f, 1, 0, 1.0f);
-		//参数：1、Map中取值   2、当前音量     3、最大音量  4、优先级   5、重播次数   6、播放速度
+		mPresentPlayId=soundPoollight.play(soundPoolMaplight.get(audioFile), 1.0f, 1.0f, 1, 0, 1.0f);//loop -1 
 	}
 
 	private void registerReceiver() {
 		IntentFilter filter=new IntentFilter();
-		filter.addAction("com.ProtectEyes.fragmentfour.ReversalSwitch");
+		filter.addAction(SystemShare.PSENSOR_INTENT_NAME);
+		filter.addAction(SystemShare.REVERSAL_INTENT_NAME);
+		filter.addAction(SystemShare.DOUDO_INTENT_NAME);
 		registerReceiver(receiver, filter);
 	}
 
 	private final BroadcastReceiver receiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			b = intent.getBooleanExtra("Reversal", false);
+			String action = intent.getAction();
+			mContext=context;
+			if(action.equals(SystemShare.PSENSOR_INTENT_NAME)) {
+				Psensor_switch = intent.getBooleanExtra(SystemShare.PSENSOR_INTENT_STATUS, false);
+			}
+			if(action.equals(SystemShare.REVERSAL_INTENT_NAME)) {
+				Reversal_switch = intent.getBooleanExtra(SystemShare.REVERSAL_INTENT_STATUS, false);
+			}
+			if(action.equals(SystemShare.DOUDO_INTENT_NAME)) {
+				Doudo_switch = intent.getBooleanExtra(SystemShare.DOUDO_INTENT_STATUS, false);
+			}
+			Log.e("luwl"," --luwl_test-receiver psensor=" + Psensor_switch + " reversal=" + Reversal_switch + " Doudo=" + Doudo_switch);
 		}
 	};
 }
