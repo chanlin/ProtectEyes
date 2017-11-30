@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.huayinghealth.protecteyes.R;
 import com.huayinghealth.protecteyes.VisionProtectionService;
+import com.huayinghealth.protecteyes.utils.SystemShare;
 
 import java.util.List;
 
@@ -34,8 +35,7 @@ public class FragmentOne  extends Fragment implements View.OnClickListener {
     private static final String OnOff = "OnOff";
     private static final String EyeProtectSwitch = "EyeProtectSwitch"; // 视力开关
 
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
+    Intent vp_service;
 
     @Nullable
     @Override
@@ -46,10 +46,11 @@ public class FragmentOne  extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        vp_service = new Intent(getActivity(), VisionProtectionService.class);
+        vp_service.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         init();
-        sharedPreferences = getActivity().getSharedPreferences(OnOff, getActivity().MODE_PRIVATE);
-        editor = sharedPreferences.edit();
-        BT_SWITCH = sharedPreferences.getBoolean(EyeProtectSwitch, false); // 获取开关的状态
+
+        BT_SWITCH = SystemShare.getSettingBoolean(getActivity().getApplicationContext(),EyeProtectSwitch, false); // 获取开关的状态
         rb_EyeProtect.setChecked(BT_SWITCH);
     }
 
@@ -65,21 +66,15 @@ public class FragmentOne  extends Fragment implements View.OnClickListener {
             case R.id.switch_EyeProtect:
                 rb_EyeProtect.setChecked(BT_SWITCH ? false : true);
                 BT_SWITCH = BT_SWITCH ? false : true;
-                editor.putBoolean(EyeProtectSwitch, BT_SWITCH);
-                editor.commit();
+                SystemShare.setSettingBoolean(getActivity().getApplicationContext(),EyeProtectSwitch, BT_SWITCH);
                 // 眼距保护开关指令
                 if (BT_SWITCH) {
                     Log.e("sendbroadcast", "打开眼距保护");
-                    Toast.makeText(getActivity(), "打开", Toast.LENGTH_SHORT).show();
-                    Intent vp_service = new Intent(getActivity(), VisionProtectionService.class);
-//                    vp_service.setAction(ACTION_START);
-                    vp_service.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    Toast.makeText(getActivity(), "打开", Toast.LENGTH_SHORT).show();
                     getActivity().startService(vp_service);
                 } else {
                     Log.e("sendbroadcast", "关闭眼距保护");
-                    Toast.makeText(getActivity(), "关闭", Toast.LENGTH_SHORT).show();
-                    Intent vp_service = new Intent(getActivity(), VisionProtectionService.class);
-                    vp_service.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    Toast.makeText(getActivity(), "关闭", Toast.LENGTH_SHORT).show();
                     getActivity().stopService(vp_service);
                 }
                 break;

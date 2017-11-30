@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.huayinghealth.protecteyes.R;
 import com.huayinghealth.protecteyes.VisionProtectionService;
+import com.huayinghealth.protecteyes.utils.SystemShare;
 
 /**
  * Created by ChanLin on 2017/11/15.
@@ -27,9 +28,6 @@ public class FragmentFive extends Fragment implements View.OnClickListener {
     private static final String OnOff = "OnOff";
     private static final String ShakeRemindSwitch = "ShakeRemindSwitch"; // 视力开关
 
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,9 +38,7 @@ public class FragmentFive extends Fragment implements View.OnClickListener {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         init();
-        sharedPreferences = getActivity().getSharedPreferences(OnOff, getActivity().MODE_PRIVATE);
-        editor = sharedPreferences.edit();
-        BT_SWITCH = sharedPreferences.getBoolean(ShakeRemindSwitch, false); // 获取开关的状态
+        BT_SWITCH = SystemShare.getSettingBoolean(getActivity().getApplicationContext(), ShakeRemindSwitch, false); // 获取开关的状态
         rb_ShakeRemind.setChecked(BT_SWITCH);
     }
 
@@ -57,13 +53,12 @@ public class FragmentFive extends Fragment implements View.OnClickListener {
             case R.id.switch_ShakeRemind:
                 rb_ShakeRemind.setChecked(BT_SWITCH ? false : true);
                 BT_SWITCH = BT_SWITCH ? false : true;
-                editor.putBoolean(ShakeRemindSwitch, BT_SWITCH);
-                editor.commit();
+                SystemShare.setSettingBoolean(getActivity().getApplicationContext(),ShakeRemindSwitch, BT_SWITCH);
                 // 抖动提醒开关指令
                 if (BT_SWITCH) {
-                    Toast.makeText(getActivity(), "打开", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getActivity(), "打开", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getActivity(), "关闭", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getActivity(), "关闭", Toast.LENGTH_SHORT).show();
                 }
                 break;
             default:

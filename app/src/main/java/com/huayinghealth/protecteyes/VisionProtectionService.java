@@ -6,9 +6,11 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Instrumentation;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.drawable.AnimationDrawable;
 import android.hardware.Sensor;
@@ -27,6 +29,8 @@ import android.view.KeyEvent;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+
+import com.huayinghealth.protecteyes.utils.SystemShare;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,6 +58,9 @@ public class VisionProtectionService extends Service {
 	private static String AUDIO_VISION_PROTECTION_OPEN="AUDIO_VISION_PROTECTION_OPEN";
 	private static final String AUDIO_VISION_PROTECTION_PATH = "/system/media/audio/notifications/audio_vision_protection.mp3";
 	//private static final String AUDIO_VISION_PROTECTION_PATH = "/system/media/audio/notifications/audio_vision_protection.wav";
+
+	private boolean b = false;
+
 	public IBinder onBind(Intent intent){
 
 		return null;
@@ -64,17 +71,17 @@ public class VisionProtectionService extends Service {
 		mContext = getBaseContext();
 		lightLoadingAudio();
 		Log.d(TAG,"------on create VisionProtectionService--------");
-
+		registerReceiver();
 	}
 
-	 @Override
+	@Override
 		 public void onDestroy() {
 		  super.onDestroy();
 		  //soundPoollight.release() ;
-		 animationDrawable = (AnimationDrawable) vp_animation.getDrawable();
-		 animationDrawable.stop();
+//		 animationDrawable = (AnimationDrawable) vp_animation.getDrawable();
+//		 animationDrawable.stop();
 		 soundPoollight.stop(mPresentPlayId);
-		 dialog.dismiss();
+//		 dialog.dismiss();
 		 mTimerIsRunning = false;
 		 num1 =2;
 		 dismiss_from_close = false;
@@ -154,7 +161,10 @@ public class VisionProtectionService extends Service {
 	private SensorEventListener sensorEventListener = new SensorEventListener() {
 		   @Override
 		   public void onSensorChanged(SensorEvent sensorEvent) {
-		    
+			   boolean a = SystemShare.getSettingBoolean(getApplicationContext(),"EyeProtectSwitch");
+
+//			   boolean b = SystemShare.getSettingBoolean(getApplicationContext(),"ReversalSwitch");
+			   Log.e("sensorlistener", "a = " + a + "  b=" + b);
 		       if(sensorEvent.sensor.getType() == Sensor.TYPE_PROXIMITY){
 		           sensorProximityValue = sensorEvent.values[0];
 		       }
@@ -383,7 +393,21 @@ public class VisionProtectionService extends Service {
 			streamVolumeCurrent = streamVolumeCurrent - 500;
 		}
 		float volume = streamVolumeCurrent / streamVolumeMax;
-		mPresentPlayId=soundPoollight.play(soundPoolMaplight.get(audioFile), 1.0f, 1.0f, 1, -1, 1.0f);
+		mPresentPlayId=soundPoollight.play(soundPoolMaplight.get(audioFile), 1.0f, 1.0f, 1, 0, 1.0f);
+		//参数：1、Map中取值   2、当前音量     3、最大音量  4、优先级   5、重播次数   6、播放速度
 	}
+
+	private void registerReceiver() {
+		IntentFilter filter=new IntentFilter();
+		filter.addAction("com.ProtectEyes.fragmentfour.ReversalSwitch");
+		registerReceiver(receiver, filter);
+	}
+
+	private final BroadcastReceiver receiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			b = intent.getBooleanExtra("Reversal", false);
+		}
+	};
 }
 
