@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.huayinghealth.protecteyes.R;
 import com.huayinghealth.protecteyes.RestRemindService;
+import com.huayinghealth.protecteyes.utils.SystemShare;
 
 /**
  * Created by ChanLin on 2017/11/15.
@@ -27,14 +28,10 @@ public class FragmentThree extends Fragment implements View.OnClickListener {
     private SeekBar seekBar_long; // 使用时间调节
     private TextView tv_learntime;
 
-    private static final String OnOff = "OnOff";
-    private static final String ResttimeSwitch = "ResttimeSwitch"; // 视力开关
     private static final String LearnTime = "LearnTime"; // 学习时长
 
     private int learntime = 45;
 
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
     Intent vp_service;
 
     @Nullable
@@ -50,10 +47,9 @@ public class FragmentThree extends Fragment implements View.OnClickListener {
         vp_service.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         init();
-        sharedPreferences = getActivity().getSharedPreferences(OnOff, getActivity().MODE_PRIVATE);
-        editor = sharedPreferences.edit();
-        BT_SWITCH = sharedPreferences.getBoolean(ResttimeSwitch, false); // 获取开关的状态
-        learntime = sharedPreferences.getInt(LearnTime, 45);
+        BT_SWITCH = SystemShare.getSettingBoolean(getActivity().getApplicationContext(),SystemShare.ResttimeSwitch, false);
+        learntime = SystemShare.getSettingInt(getActivity().getApplicationContext(), SystemShare.LearnTime, 45);
+
         rb_Resttime.setChecked(BT_SWITCH);
         tv_learntime.setText(learntime + "");
         seekBar_long.setProgress(learntime);
@@ -81,8 +77,7 @@ public class FragmentThree extends Fragment implements View.OnClickListener {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) { // 停止拖动时调用
                 // 保存到数据
-                editor.putInt(LearnTime, learntime);
-                editor.commit();
+                SystemShare.setSettingInt(getActivity().getApplicationContext(),SystemShare.LearnTime,learntime);
                 if (BT_SWITCH){
                     getActivity().stopService(vp_service);
                     getActivity().startService(vp_service);
@@ -97,8 +92,8 @@ public class FragmentThree extends Fragment implements View.OnClickListener {
             case R.id.switch_Resttime:
                 rb_Resttime.setChecked(BT_SWITCH ? false : true);
                 BT_SWITCH = BT_SWITCH ? false : true;
-                editor.putBoolean(ResttimeSwitch, BT_SWITCH);
-                editor.commit();
+                SystemShare.setSettingBoolean(getActivity().getApplicationContext(),SystemShare.ResttimeSwitch,BT_SWITCH);
+                SystemShare.setSettingInt(getActivity().getApplicationContext(),SystemShare.LearnTime,learntime);
 //                seekBar_long.setEnabled(BT_SWITCH);
                 // 疲劳提醒开关指令
                 if (BT_SWITCH) {
