@@ -18,6 +18,7 @@ public class SystemShare {
 
     public static final String EyeProtectSwitch = "EyeProtectSwitch"; // 视力开关
     public static final String ReversalSwitch = "ReversalSwitch"; // 视力开关
+    public static final String BRIGHTNESS_MODE_SWITCH = "brightness_mode_switch"; // 光线感应开关
     public static final String ResttimeSwitch = "ResttimeSwitch";//第三个开关
     public static final String LearnTime = "LearnTime";//第三个 时间
     public static final String ShakeRemindSwitch = "ShakeRemindSwitch"; // 抖动开关
@@ -28,6 +29,7 @@ public class SystemShare {
     public static final String REVERSAL_INTENT_STATUS = "ReversalStatus";
     public static final String DOUDO_INTENT_NAME = "com.ProtectEyes.fragmentfive.DoudoSwitch";
     public static final String DOUDO_INTENT_STATUS = "DoudoStatus";
+    public static final String UPDATE_BLUELIGHT = "com.huaying.protecteyes.update_bluelight"; // 自动调节亮度广播
     /**
      * 保存String类型数据
      *

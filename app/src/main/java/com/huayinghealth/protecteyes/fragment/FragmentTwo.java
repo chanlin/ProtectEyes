@@ -2,6 +2,10 @@ package com.huayinghealth.protecteyes.fragment;
 
 
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -27,10 +31,6 @@ public class FragmentTwo extends Fragment implements View.OnClickListener {
     private Boolean BT_SWITCH = false;//开关默认关闭
     private RadioButton rb_LightProtect;
 
-    private static final String OnOff = "OnOff";
-    private static final String brightness_mode_switch  = "BRIGHTNESS_MODE_Switch"; // 光线开关
-
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,8 +42,10 @@ public class FragmentTwo extends Fragment implements View.OnClickListener {
         super.onActivityCreated(savedInstanceState);
         init();
 
-        BT_SWITCH = SystemShare.getSettingBoolean(getActivity(),brightness_mode_switch, false); // 获取开关的状态
+        BT_SWITCH = SystemShare.getSettingBoolean(getActivity(),SystemShare.BRIGHTNESS_MODE_SWITCH, false); // 获取开关的状态
         rb_LightProtect.setChecked(BT_SWITCH);
+        registerReceiver();
+
     }
 
     private void init() {
@@ -57,7 +59,7 @@ public class FragmentTwo extends Fragment implements View.OnClickListener {
             case R.id.switch_LightProtect:
                 rb_LightProtect.setChecked(BT_SWITCH ? false : true);
                 BT_SWITCH = BT_SWITCH ? false : true;
-                SystemShare.setSettingBoolean(getActivity(),brightness_mode_switch, BT_SWITCH);
+                SystemShare.setSettingBoolean(getActivity(),SystemShare.BRIGHTNESS_MODE_SWITCH, BT_SWITCH);
                 // 光线感应开关指令
                 if (BT_SWITCH) {
                     Toast.makeText(getActivity(), "打开", Toast.LENGTH_SHORT).show();
@@ -71,4 +73,20 @@ public class FragmentTwo extends Fragment implements View.OnClickListener {
                 break;
         }
     }
+
+    private void registerReceiver(){
+        IntentFilter filter=new IntentFilter();
+        filter.addAction(SystemShare.UPDATE_BLUELIGHT);
+        getActivity().registerReceiver(receiver, filter);
+    }
+
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if(action.equals(SystemShare.UPDATE_BLUELIGHT)){
+                BT_SWITCH = intent.getBooleanExtra(SystemShare.BRIGHTNESS_MODE_SWITCH, false);
+            }
+        }
+    };
 }
