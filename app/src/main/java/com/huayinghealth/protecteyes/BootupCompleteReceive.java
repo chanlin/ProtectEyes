@@ -31,11 +31,11 @@ public class BootupCompleteReceive extends BroadcastReceiver {
             ResttimeSwitch = SystemShare.getSettingBoolean(mContext,SystemShare.ResttimeSwitch,false);
             Log.e("luwl"," --luwl_test-shutdownandboottimeReceiver psensor=" + Psensor_switch + " reversal=" + Reversal_switch + " Doudo=" + Doudo_switch
              + " ResttimeSwitch=" + ResttimeSwitch);
-            if(Psensor_switch || Reversal_switch || Doudo_switch) {
+            //if(Psensor_switch || Reversal_switch || Doudo_switch) {
                 Intent vp_service = new Intent(mContext, VisionProtectionService.class);
                 vp_service.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startService(vp_service);
-            }
+            //}
             if(ResttimeSwitch){
                 Intent rs_service = new Intent(mContext, RestRemindService.class);
                 rs_service.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

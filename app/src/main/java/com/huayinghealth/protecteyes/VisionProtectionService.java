@@ -60,9 +60,10 @@ public class VisionProtectionService extends Service {
 	private int mPresentPlayId;
 	private static String AUDIO_VISION_PROTECTION_OPEN="AUDIO_VISION_PROTECTION_OPEN";
 	private static String AUDIO_FANZAN_PROTECTION_OPEN="AUDIO_FANZAN_PROTECTION_OPEN";
+	private static String AUDIO_DOUDO_PROTECTION_OPEN="AUDIO_DOUDO_PROTECTION_OPEN";
 	private static final String AUDIO_VISION_PROTECTION_PATH = "/system/media/audio/notifications/audio_vision_protection.mp3";
 	private static final String AUDIO_FANZAN_PROTECTION_PATH = "/system/media/audio/notifications/audio_fanzan_wainning.mp3";
-	//private static final String AUDIO_VISION_PROTECTION_PATH = "/system/media/audio/notifications/audio_vision_protection.wav";
+	private static final String AUDIO_DOUDO_PROTECTION_PATH = "/system/media/audio/notifications/audio_doudo_wainning.mp3";
 
 	private boolean Psensor_switch = false;
 	private boolean Reversal_switch = false;
@@ -130,11 +131,7 @@ public class VisionProtectionService extends Service {
 		    enable_ps(false);
 		 }
 	public int onStartCommand(Intent intent,int flags,int startId){
-		//wbin add
-	final boolean visionProtectionEnabled = Settings.Secure.getInt(getContentResolver(),
-                "vision protection", 0) != 0;
  		enable_ps(true);
-	
 		return Service.START_STICKY;
 	}
 
@@ -191,9 +188,9 @@ public class VisionProtectionService extends Service {
 				case 9999:
 					Log.e("wzb","999 peak num="+peak_num + " phone_in_doudo_status" + phone_in_doudo_status);
 					if((peak_num >= 4) && (phone_in_doudo_status == 0)){
-						Toast.makeText(mContext, "检测到颠簸!!!", Toast.LENGTH_SHORT).show();
+						//Toast.makeText(mContext, "检测到颠簸!!!", Toast.LENGTH_SHORT).show();
 						handler.sendEmptyMessage(0);
-						lightplayAuio(AUDIO_VISION_PROTECTION_OPEN);
+						lightplayAuio(AUDIO_DOUDO_PROTECTION_OPEN);
 						phone_in_doudo_status = 1;
 						//这里触发检测到抖动.可以发送一个广播,然后app接收到广播后做相应的界面提示
 					}
@@ -296,7 +293,7 @@ public class VisionProtectionService extends Service {
 					  }
 				   }
 
-				if((sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) && Reversal_switch){
+				if((sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) && (Reversal_switch || Doudo_switch)){
 					if (sensorEvent.values[2] < -4) {
 						sensorAccFanzanValue = 1;
 					}else{
@@ -305,30 +302,32 @@ public class VisionProtectionService extends Service {
 					
 			  		if (powerManager.isScreenOn())
 			  		{
-						Log.e("luwl"," --luwl_test--sensorAccFanzanValue="+sensorAccFanzanValue + " old=" + sensorAccFanzanValueOld);	
-						if(sensorAccFanzanValue != sensorAccFanzanValueOld) {   
-		
-							if(sensorAccFanzanValue==1) {                          
-								dismiss_Acc_Fanzan_when_not_fit_status = false;
-								eye_protect_sound_select = 2;
-								Log.e("luwl"," --luwl_test-TYPE_ACCELEROMETER-dialogThread start mTimerIsRunning=!!!" + mTimerIsRunning);	
-								dialogThread();
-							} else {  	 
-								dismiss_animationDrawable_dialog();
-								Log.e("luwl"," --luwl_test-TYPE_ACCELEROMETER from normal-dismiss_animationDrawable_dialog !!!");	
-							}  
-							sensorAccFanzanValueOld=sensorAccFanzanValue;
-			  			}
-
-						float xyz=sensorEvent.values[0]*sensorEvent.values[0]
-								+sensorEvent.values[1]*sensorEvent.values[1]
-								+sensorEvent.values[2]*sensorEvent.values[2];
-						Log.e("wzb","peak xyz="+xyz + " " + sensorEvent.values[0]+ " " + sensorEvent.values[1]+ " " + sensorEvent.values[2]);
-						parse_acc_data(xyz);
+						Log.e("luwl"," --luwl_test--sensorAccFanzanValue="+sensorAccFanzanValue + " old=" + sensorAccFanzanValueOld);
+						if(Reversal_switch) {
+							if (sensorAccFanzanValue != sensorAccFanzanValueOld) {
+								if (sensorAccFanzanValue == 1) {
+									dismiss_Acc_Fanzan_when_not_fit_status = false;
+									eye_protect_sound_select = 2;
+									Log.e("luwl", " --luwl_test-TYPE_ACCELEROMETER-dialogThread start mTimerIsRunning=!!!" + mTimerIsRunning);
+									dialogThread();
+								} else {
+									dismiss_animationDrawable_dialog();
+									Log.e("luwl", " --luwl_test-TYPE_ACCELEROMETER from normal-dismiss_animationDrawable_dialog !!!");
+								}
+								sensorAccFanzanValueOld = sensorAccFanzanValue;
+							}
+						}
+						if(Doudo_switch) {
+							float xyz = sensorEvent.values[0] * sensorEvent.values[0]
+									+ sensorEvent.values[1] * sensorEvent.values[1]
+									+ sensorEvent.values[2] * sensorEvent.values[2];
+							Log.e("wzb", "peak xyz=" + xyz + " " + sensorEvent.values[0] + " " + sensorEvent.values[1] + " " + sensorEvent.values[2]);
+							parse_acc_data(xyz);
+						}
 					  }
 					  else
 					  {
-						if(dialog!=null)
+						if((dialog!=null) && Reversal_switch)
 						{
 							if(dismiss_Acc_Fanzan_when_not_fit_status == false){
 								dismiss_Acc_Fanzan_when_not_fit_status = true;
@@ -442,9 +441,9 @@ public class VisionProtectionService extends Service {
 	private void lightLoadingAudio() {
 		soundPoollight = new SoundPool(1, AudioManager.STREAM_MUSIC, 100);
 		soundPoolMaplight = new HashMap<String, Integer>();
-		soundPoolMaplight.put(AUDIO_VISION_PROTECTION_OPEN,soundPoollight.load(AUDIO_VISION_PROTECTION_PATH, 1));
-		soundPoolMaplight.put(AUDIO_FANZAN_PROTECTION_OPEN,soundPoollight.load(AUDIO_FANZAN_PROTECTION_PATH, 2));
-
+		soundPoolMaplight.put(AUDIO_VISION_PROTECTION_OPEN,soundPoollight.load(AUDIO_VISION_PROTECTION_PATH, 2));
+		soundPoolMaplight.put(AUDIO_FANZAN_PROTECTION_OPEN,soundPoollight.load(AUDIO_FANZAN_PROTECTION_PATH, 1));
+		soundPoolMaplight.put(AUDIO_DOUDO_PROTECTION_OPEN,soundPoollight.load(AUDIO_DOUDO_PROTECTION_PATH, 1));
 	}
 
 	private void lightplayAuio(String audioFile) {
