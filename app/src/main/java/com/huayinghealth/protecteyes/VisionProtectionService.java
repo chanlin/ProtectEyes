@@ -26,8 +26,10 @@ import android.os.PowerManager;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.huayinghealth.protecteyes.fragment.FragmentFour;
@@ -53,7 +55,8 @@ public class VisionProtectionService extends Service {
 	private boolean mTimerIsRunning = false;
 	private boolean dismiss_when_not_fit_status = false;
 	private boolean dismiss_Acc_Fanzan_when_not_fit_status = false;
-	private ImageView vp_animation; 
+	private ImageView vp_animation;
+	private Button btn_back;
 	private static SoundPool soundPoollight = null;
 	private static HashMap<String, Integer> soundPoolMaplight;
 	private AnimationDrawable animationDrawable;
@@ -404,7 +407,19 @@ public class VisionProtectionService extends Service {
         dialog = builder.create();
 		dialog.setCanceledOnTouchOutside(false);		
         dialog.getWindow().setType(  
-                (WindowManager.LayoutParams.TYPE_SYSTEM_ALERT)); 
+                (WindowManager.LayoutParams.TYPE_SYSTEM_ALERT));
+		dialog.setCancelable(false);
+		dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+			@Override
+			public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_BACK) { //监控/拦截/屏蔽返回键
+					Log.e("onKyeDown", "KEYCODE_BACK");
+					return true;
+				} else {
+					return false;
+				}
+			}
+		});
     	
     }
     private Handler handler = new Handler() {  
@@ -415,7 +430,14 @@ public class VisionProtectionService extends Service {
             dialog.show(); 
 			Window window = dialog.getWindow();
 			window.setContentView(R.layout.vp_dialog); 
-			dialog.getWindow().setLayout(1260, 600);  
+			dialog.getWindow().setLayout(1260, 600);
+			btn_back = (Button) dialog.findViewById(R.id.btn_Back);
+			btn_back.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					dialog.cancel();
+				}
+			});
 			vp_animation = (ImageView) dialog.findViewById(R.id.vp_animation);
 			vp_animation.setImageResource(R.drawable.vision_protection_ani);
 			animationDrawable = (AnimationDrawable) vp_animation.getDrawable();	

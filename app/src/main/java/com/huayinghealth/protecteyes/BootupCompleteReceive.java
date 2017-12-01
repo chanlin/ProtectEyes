@@ -17,6 +17,7 @@ public class BootupCompleteReceive extends BroadcastReceiver {
     private boolean Reversal_switch = false;
     private boolean Doudo_switch = false;
     private boolean ResttimeSwitch = false;//休息时间开关
+    private boolean BT_SWITCH = false; // 光线感应开关
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -42,6 +43,12 @@ public class BootupCompleteReceive extends BroadcastReceiver {
                 mContext.startService(rs_service);
             }
 
+        }
+        Log.e("UPDATE_BLUELIGHT", "UPDATE_BLUELIGHT");
+        if (action.equals(SystemShare.UPDATE_BLUELIGHT)) {
+            BT_SWITCH = intent.getStringExtra(SystemShare.BULELIGHE_STATE).equals("1") ? true : false;
+            Log.e("UPDATE_BLUELIGHT", "BT_SWITCH = " + BT_SWITCH);
+            SystemShare.setSettingBoolean(mContext, SystemShare.BRIGHTNESS_MODE_SWITCH, BT_SWITCH);
         }
     }
 }

@@ -2,6 +2,7 @@ package com.huayinghealth.protecteyes;
 
 import android.app.AlertDialog;
 import android.app.Service;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -9,7 +10,10 @@ import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 
 import com.huayinghealth.protecteyes.dialog.RestRemindDialog;
 import com.huayinghealth.protecteyes.utils.SystemShare;
@@ -26,6 +30,7 @@ public class RestRemindService extends Service {
     AlertDialog dialog;
 
     private int learntime = 0;
+    private Button btn_back;
 
 
     final Handler handler = new Handler() {
@@ -80,9 +85,28 @@ public class RestRemindService extends Service {
         dialog = builder.create();
         dialog.setCanceledOnTouchOutside(false);
         dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        dialog.setCancelable(false);
+        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) { //监控/拦截/屏蔽返回键
+                    Log.e("onKyeDown", "KEYCODE_BACK");
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
         dialog.show();
         dialog.setContentView(R.layout.dialog_restremine);
         dialog.getWindow().setLayout(1260, 600);
+        btn_back = (Button) dialog.findViewById(R.id.btn_Back);
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
     }
 
     @Override

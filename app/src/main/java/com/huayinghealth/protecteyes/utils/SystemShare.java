@@ -19,6 +19,7 @@ public class SystemShare {
     public static final String EyeProtectSwitch = "EyeProtectSwitch"; // 视力开关
     public static final String ReversalSwitch = "ReversalSwitch"; // 视力开关
     public static final String BRIGHTNESS_MODE_SWITCH = "brightness_mode_switch"; // 光线感应开关
+    public static final String BULELIGHE_STATE = "protect.eyes.update_bluelight_state"; // 光线感应开关状态值 1、true 0、false
     public static final String ResttimeSwitch = "ResttimeSwitch";//第三个开关
     public static final String LearnTime = "LearnTime";//第三个 时间
     public static final String ShakeRemindSwitch = "ShakeRemindSwitch"; // 抖动开关
