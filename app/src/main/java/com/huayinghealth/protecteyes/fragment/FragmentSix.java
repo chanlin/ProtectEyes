@@ -24,7 +24,7 @@ public class FragmentSix extends Fragment implements View.OnClickListener{
     private RadioButton btn_switch;
     private Boolean BT_SWITCH = false;//开关默认关闭
     private static final String OnOff = "OnOff";
-    private static final String colorOnOff = "colorOnOff"; // 开关
+    private int progress_value = 50;
 
 
     private SeekBar seekBar;
@@ -47,11 +47,13 @@ public class FragmentSix extends Fragment implements View.OnClickListener{
     private void init(){
         btn_switch = (RadioButton) getView().findViewById(R.id.btn_switch);
         btn_switch.setOnClickListener(this);
-        BT_SWITCH = SystemShare.getSettingBoolean(getActivity(),colorOnOff);
+        BT_SWITCH = SystemShare.getSettingBoolean(getActivity(),SystemShare.colorOnOff);
+        progress_value = SystemShare.getSettingInt(getActivity(),SystemShare.colorValue);
         btn_switch.setChecked(BT_SWITCH);
 
 
         seekBar = (SeekBar) getActivity().findViewById(R.id.sb_colortemperature);
+        seekBar.setProgress(progress_value);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
@@ -66,6 +68,7 @@ public class FragmentSix extends Fragment implements View.OnClickListener{
                     intent.putExtra("protect.eyes.update_bluelight_progress",progress);
                     //intent.getIntExtra("protect.eyes.update_bluelight_progress",progress);
                     getActivity().sendBroadcast(intent);
+                    SystemShare.setSettingInt(getActivity(),SystemShare.colorValue,progress);
                 }
               /*  else if(action.equals("com.huaying.protecteyes.update_bluelight")){
                     String b_state = intent.getStringExtra("protect.eyes.update_bluelight_state");
@@ -112,7 +115,7 @@ public class FragmentSix extends Fragment implements View.OnClickListener{
             case R.id.btn_switch:
                 btn_switch.setChecked(BT_SWITCH ? false : true);
                 BT_SWITCH = BT_SWITCH ? false : true;
-                SystemShare.setSettingBoolean(getActivity(),colorOnOff,BT_SWITCH);
+                SystemShare.setSettingBoolean(getActivity(),SystemShare.colorOnOff,BT_SWITCH);
                 Intent intent = new Intent("com.huaying.protecteyes.update_bluelight");
                 if(BT_SWITCH){
 
