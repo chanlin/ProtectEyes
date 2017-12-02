@@ -23,6 +23,8 @@ public class SystemShare {
     public static final String ResttimeSwitch = "ResttimeSwitch";//第三个开关
     public static final String LearnTime = "LearnTime";//第三个 时间
     public static final String ShakeRemindSwitch = "ShakeRemindSwitch"; // 抖动开关
+    public static final String colorOnOff = "colorOnOff"; // 开关
+    public static final String colorValue = "colorValue"; // 开关
 
     public static final String PSENSOR_INTENT_NAME = "com.ProtectEyes.fragmentone.PsensorSwitch";
     public static final String PSENSOR_INTENT_STATUS = "PsensorStatus";

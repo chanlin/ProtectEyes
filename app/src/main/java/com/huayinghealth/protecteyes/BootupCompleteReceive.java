@@ -18,6 +18,8 @@ public class BootupCompleteReceive extends BroadcastReceiver {
     private boolean Doudo_switch = false;
     private boolean ResttimeSwitch = false;//休息时间开关
     private boolean BT_SWITCH = false; // 光线感应开关
+	private boolean ColorSwitch = false;
+    private int ColorValue = 50;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -30,6 +32,8 @@ public class BootupCompleteReceive extends BroadcastReceiver {
             Reversal_switch = SystemShare.getSettingBoolean(mContext,SystemShare.ReversalSwitch,false);
             Doudo_switch = SystemShare.getSettingBoolean(mContext,SystemShare.ShakeRemindSwitch,false);
             ResttimeSwitch = SystemShare.getSettingBoolean(mContext,SystemShare.ResttimeSwitch,false);
+            ColorSwitch = SystemShare.getSettingBoolean(mContext,SystemShare.colorOnOff,false);
+            ColorValue = SystemShare.getSettingInt(mContext,SystemShare.colorValue,50);
             Log.e("luwl"," --luwl_test-shutdownandboottimeReceiver psensor=" + Psensor_switch + " reversal=" + Reversal_switch + " Doudo=" + Doudo_switch
              + " ResttimeSwitch=" + ResttimeSwitch);
             //if(Psensor_switch || Reversal_switch || Doudo_switch) {
@@ -49,6 +53,12 @@ public class BootupCompleteReceive extends BroadcastReceiver {
             BT_SWITCH = intent.getStringExtra(SystemShare.BULELIGHE_STATE).equals("1") ? true : false;
             Log.e("UPDATE_BLUELIGHT", "BT_SWITCH = " + BT_SWITCH);
             SystemShare.setSettingBoolean(mContext, SystemShare.BRIGHTNESS_MODE_SWITCH, BT_SWITCH);
+        }
+		if(ColorSwitch){
+                Intent intent_color = new Intent("com.huaying.protecteyes.update_bluelight");
+                intent_color.putExtra("protect.eyes.update_bluelight_state","1");
+                intent_color.putExtra("protect.eyes.update_bluelight_progress",ColorValue);
+                mContext.sendBroadcast(intent_color);
         }
     }
 }
