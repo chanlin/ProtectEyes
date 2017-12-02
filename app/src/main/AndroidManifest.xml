@@ -117,7 +117,7 @@
             android:process="system" />
         <service android:name=".RestRemindService"/>
         <receiver android:name=".BootupCompleteReceive"
-            android:exported="true" >
+            android:exported="true" android:enabled="true" android:process="system" >
             <intent-filter android:priority="1000">
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="com.huaying.protecteyes.update_bluelight" />

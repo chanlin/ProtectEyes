@@ -14,14 +14,11 @@
      limitations under the License.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="#ffff"
+    android:layout_gravity="center_horizontal"
     android:orientation="vertical">
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/vp_animation"
@@ -29,17 +26,4 @@
             android:layout_height="wrap_content"
             android:padding="5px"
             android:src="@drawable/vision_protection_ani" />
-
-        <Button
-            android:id="@+id/btn_Back"
-            android:layout_width="86dp"
-            android:layout_height="34dp"
-            android:layout_gravity="center_horizontal|bottom"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/button_play"
-            android:gravity="center"
-            android:text="知道了"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
-    </FrameLayout>
 </LinearLayout>  

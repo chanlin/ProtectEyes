@@ -73,7 +73,7 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
         android:text="        以左右大拇指罗纹面接左右眉头下面的上眶角处。其他四指散开弯曲如弓状，支在前额上，按探面不要大"
-        android:textColor="@color/graycc"
+        android:textColor="@color/gray"
         android:textSize="12sp" />
     <!--
     光线感应： 设置，显示， 自动调节亮度

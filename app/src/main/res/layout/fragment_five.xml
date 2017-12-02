@@ -7,7 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:background="@mipmap/icon_protect1"
+        android:background="@mipmap/icon_protect15"
         android:orientation="vertical">
 
         <RadioButton
@@ -25,7 +25,7 @@
             android:layout_marginLeft="25dp"
             android:layout_marginTop="10dp"
             android:text="在抖动的情况下（如乘坐行驶在颠簸的道路上的公交车），使用平板时会弹出抖动提示并锁定平板，提示当前环境不能使用平板。"
-            android:textColor="@color/white"
+            android:textColor="@color/gray"
             android:textSize="12sp" />
     </LinearLayout>
 

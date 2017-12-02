@@ -10,8 +10,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="30dp"
-        android:text="可以在观看电子书时打开，更舒适的阅读方式"
-        android:textColor="@color/graycc"
+        android:text="在长期阅读或观看电子书时启用，更舒适的阅读方式"
+        android:textColor="@color/gray"
         android:textSize="12sp" />
 
     <RadioButton
