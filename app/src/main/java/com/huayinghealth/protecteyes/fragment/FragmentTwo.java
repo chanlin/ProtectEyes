@@ -29,7 +29,7 @@ import static android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL;
  */
 public class FragmentTwo extends Fragment implements View.OnClickListener {
 
-    private Boolean BT_SWITCH = false;//开关默认关闭
+    private Boolean AUTOBACKLIGHT_SWITCH = false;//开关默认关闭
     private RadioButton rb_LightProtect;
 
     @Nullable
@@ -41,11 +41,11 @@ public class FragmentTwo extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//        registerReceiver();
+        registerReceiver();
         init();
 
-        BT_SWITCH = SystemShare.getSettingBoolean(getActivity(), SystemShare.BRIGHTNESS_MODE_SWITCH, false); // 获取开关的状态
-        rb_LightProtect.setChecked(BT_SWITCH);
+        AUTOBACKLIGHT_SWITCH = SystemShare.getSettingBoolean(getActivity(), SystemShare.BRIGHTNESS_MODE_SWITCH, false); // 获取开关的状态
+        rb_LightProtect.setChecked(AUTOBACKLIGHT_SWITCH);
 
     }
 
@@ -58,47 +58,47 @@ public class FragmentTwo extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.switch_LightProtect:
-                rb_LightProtect.setChecked(BT_SWITCH ? false : true);
-                BT_SWITCH = BT_SWITCH ? false : true;
-                SystemShare.setSettingBoolean(getActivity(), SystemShare.BRIGHTNESS_MODE_SWITCH, BT_SWITCH);
+                rb_LightProtect.setChecked(AUTOBACKLIGHT_SWITCH ? false : true);
+                AUTOBACKLIGHT_SWITCH = AUTOBACKLIGHT_SWITCH ? false : true;
+                SystemShare.setSettingBoolean(getActivity(), SystemShare.BRIGHTNESS_MODE_SWITCH, AUTOBACKLIGHT_SWITCH);
                 // 光线感应开关指令
-                if (BT_SWITCH) {
+                if (AUTOBACKLIGHT_SWITCH) {
                     Toast.makeText(getActivity(), "打开", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getActivity(), "关闭", Toast.LENGTH_SHORT).show();
                 }
                 Settings.System.putInt(getActivity().getContentResolver(), SCREEN_BRIGHTNESS_MODE,
-                        BT_SWITCH ? SCREEN_BRIGHTNESS_MODE_AUTOMATIC : SCREEN_BRIGHTNESS_MODE_MANUAL);
+                        AUTOBACKLIGHT_SWITCH ? SCREEN_BRIGHTNESS_MODE_AUTOMATIC : SCREEN_BRIGHTNESS_MODE_MANUAL);
                 break;
             default:
                 break;
         }
     }
 
-//    private void registerReceiver() {
-//        IntentFilter filter = new IntentFilter();
-//        filter.addAction(SystemShare.UPDATE_BLUELIGHT);
-//        getActivity().registerReceiver(receiver, filter);
-//    }
-//
-//    private final BroadcastReceiver receiver = new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            Log.e("UPDATE_BLUELIGHT", "UPDATE_BLUELIGHT");
-//            String action = intent.getAction();
-//            if (action.equals(SystemShare.UPDATE_BLUELIGHT)) {
-//                BT_SWITCH = intent.getStringExtra(SystemShare.BULELIGHE_STATE).equals("1") ? true : false;
-//                Log.e("UPDATE_BLUELIGHT", "BT_SWITCH = " + BT_SWITCH);
-//                SystemShare.setSettingBoolean(getActivity(), SystemShare.BRIGHTNESS_MODE_SWITCH, BT_SWITCH);
-//            }
-//        }
-//    };
+    private void registerReceiver() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(SystemShare.UPDATE_AUTOBACKLIGHT);
+        getActivity().registerReceiver(receiver, filter);
+    }
+
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.e("UPDATE_AUTOBACKLIGHT", "UPDATE_AUTOBACKLIGHT");
+            String action = intent.getAction();
+             if (action.equals(SystemShare.UPDATE_AUTOBACKLIGHT)) {
+                 AUTOBACKLIGHT_SWITCH = intent.getStringExtra(SystemShare.SYSTEM_AUTOBACKLIGHT_STAUTS).equals("1") ? true : false;
+                 Log.e("UPDATE_BLUELIGHT", "AUTOBACKLIGHT_SWITCH = " + AUTOBACKLIGHT_SWITCH);
+                 SystemShare.setSettingBoolean(getActivity(), SystemShare.BRIGHTNESS_MODE_SWITCH, AUTOBACKLIGHT_SWITCH);
+            }
+        }
+    };
 
     @Override
     public void onResume() {
         super.onResume();
-        BT_SWITCH = SystemShare.getSettingBoolean(getActivity(), SystemShare.BRIGHTNESS_MODE_SWITCH, false);
-        rb_LightProtect.setChecked(BT_SWITCH);
-        Log.e("UPDATE_BLUELIGHT", "BT_SWITCH == " + BT_SWITCH);
+        AUTOBACKLIGHT_SWITCH = SystemShare.getSettingBoolean(getActivity(), SystemShare.BRIGHTNESS_MODE_SWITCH, false);
+        rb_LightProtect.setChecked(AUTOBACKLIGHT_SWITCH);
+        Log.e("UPDATE_BLUELIGHT", "AUTOBACKLIGHT_SWITCH == " + AUTOBACKLIGHT_SWITCH);
     }
 }
