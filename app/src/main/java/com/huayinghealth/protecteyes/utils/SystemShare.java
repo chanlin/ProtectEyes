@@ -32,7 +32,9 @@ public class SystemShare {
     public static final String REVERSAL_INTENT_STATUS = "ReversalStatus";
     public static final String DOUDO_INTENT_NAME = "com.ProtectEyes.fragmentfive.DoudoSwitch";
     public static final String DOUDO_INTENT_STATUS = "DoudoStatus";
-    public static final String UPDATE_BLUELIGHT = "com.huaying.protecteyes.update_bluelight"; // 自动调节亮度广播
+    public static final String UPDATE_BLUELIGHT = "com.huaying.protecteyes.update_bluelight";
+    public static final String UPDATE_AUTOBACKLIGHT = "android.intent.action.update_autoBrightness"; // 自动调节亮度广播
+    public static final String SYSTEM_AUTOBACKLIGHT_STAUTS = "android.Intent.autoBrightness_switch"; // 系统自动调节亮度的状态
     /**
      * 保存String类型数据
      *
