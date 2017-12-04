@@ -99,7 +99,7 @@ public class RestRemindService extends Service {
         });
         dialog.show();
         dialog.setContentView(R.layout.dialog_restremine);
-        dialog.getWindow().setLayout(1260, 810);
+        dialog.getWindow().setLayout(840, 767);
         btn_back = (Button) dialog.findViewById(R.id.btn_Back);
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override

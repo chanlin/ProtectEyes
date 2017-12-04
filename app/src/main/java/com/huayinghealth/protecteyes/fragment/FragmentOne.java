@@ -103,9 +103,9 @@ public class FragmentOne  extends Fragment implements View.OnClickListener {
                     context.startService(vp_service);
                     Log.e("BootBroadcastTeceiver", "luwl_apk-启动服务 " + "start ACTION_TIME_TICK act VisionProtectionService");
                 }else {
-                    if (!(BT_SWITCH || FragmentFour.BT_FANZAN_SWITCH || FragmentFive.BT_DOUDO_SWITCH)) {
+                    if (!(BT_SWITCH || FragmentFour.BT_FANZAN_SWITCH || FragmentFive.BT_DOUDO_SWITCH) && isServiceExisted(context, "com.huayinghealth.protecteyes.VisionProtectionService")) {
                         Log.e("BootBroadcastTeceiver", "luwl_apk-关闭 " + "stop ACTION_TIME_TICK act VisionProtectionService");
-                        Toast.makeText(getActivity(), "关闭", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getActivity(), "关闭", Toast.LENGTH_SHORT).show();
                         Intent vp_service = new Intent(getActivity(), VisionProtectionService.class);
                         vp_service.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         getActivity().stopService(vp_service);
