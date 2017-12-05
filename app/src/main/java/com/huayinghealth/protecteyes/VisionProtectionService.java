@@ -95,6 +95,9 @@ public class VisionProtectionService extends Service {
     int peak_num = 0;
     int phone_in_doudo_status = 0;
     int phone_in_doudo_stop_counter = 0;
+	private boolean psensor_idle_status = false;
+	private boolean fanzan_idle_status = false;
+	private boolean doudo_idle_status = false;
 
     public IBinder onBind(Intent intent) {
 
@@ -198,6 +201,7 @@ public class VisionProtectionService extends Service {
                     if ((peak_num >= 4) && (phone_in_doudo_status == 0)) {
                         //Toast.makeText(mContext, "检测到颠簸!!!", Toast.LENGTH_SHORT).show();
                         remind_title = 3;
+						doudo_idle_status = false;
                         handler.sendEmptyMessage(0);
                         lightplayAuio(AUDIO_DOUDO_PROTECTION_OPEN);
                         phone_in_doudo_status = 1;
@@ -231,6 +235,7 @@ public class VisionProtectionService extends Service {
                     if (phone_in_doudo_stop_counter > 20) {
                         phone_in_doudo_stop_counter = 0;
                         phone_in_doudo_status = 0;
+						doudo_idle_status = true;
                         dismiss_animationDrawable_dialog();
                     }
                 }
@@ -276,11 +281,13 @@ public class VisionProtectionService extends Service {
 
                         if (sensorProximityValue == 0.0) {
                             dismiss_when_not_fit_status = false;
+							psensor_idle_status = false;
                             eye_protect_sound_select = 1;
                             remind_title = 1;
                             Log.e("luwl", " --luwl_test-TYPE_PROXIMITY-dialogThread start mTimerIsRunning=!!!" + mTimerIsRunning);
                             dialogThread();
                         } else {
+						    psensor_idle_status = true;
                             dismiss_animationDrawable_dialog();
                             Log.e("luwl", " --luwl_test-TYPE_PROXIMITY-from close-dismiss_animationDrawable_dialog=");
                         }
@@ -292,6 +299,7 @@ public class VisionProtectionService extends Service {
                         if (dismiss_when_not_fit_status == false) {
                             dismiss_when_not_fit_status = true;
                             sensorProximityValueOld = 1f;
+							psensor_idle_status = true;
                             dismiss_animationDrawable_dialog();
                             Log.e("luwl", " --luwl_test-TYPE_PROXIMITY-from not fit-dismiss_animationDrawable_dialog=");
                         }
@@ -314,9 +322,11 @@ public class VisionProtectionService extends Service {
                                 dismiss_Acc_Fanzan_when_not_fit_status = false;
                                 eye_protect_sound_select = 2;
                                 remind_title = 2;
+								fanzan_idle_status = false;
                                 Log.e("luwl", " --luwl_test-TYPE_ACCELEROMETER-dialogThread start mTimerIsRunning=!!!" + mTimerIsRunning);
                                 dialogThread();
                             } else {
+								fanzan_idle_status = true;
                                 dismiss_animationDrawable_dialog();
                                 Log.e("luwl", " --luwl_test-TYPE_ACCELEROMETER from normal-dismiss_animationDrawable_dialog !!!");
                             }
@@ -334,12 +344,18 @@ public class VisionProtectionService extends Service {
                     if ((dialog != null) && Reversal_switch) {
                         if (dismiss_Acc_Fanzan_when_not_fit_status == false) {
                             dismiss_Acc_Fanzan_when_not_fit_status = true;
+							fanzan_idle_status = true;
                             dismiss_animationDrawable_dialog();
                             sensorAccFanzanValueOld = 0;
                             Log.e("luwl", " --luwl_test-TYPE_ACCELEROMETER from screen off-dismiss_animationDrawable_dialog !!!");
-                        }
-                    }
-                }
+							}
+						}
+					  }
+				   }
+				   if(psensor_idle_status == true && fanzan_idle_status == true && doudo_idle_status == true) {
+					   if(dialog.isShowing()){
+						   dialog.dismiss();
+					   }
             }
         }
 
