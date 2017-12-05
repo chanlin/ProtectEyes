@@ -41,7 +41,7 @@ public class FragmentTwo extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//        registerReceiver();
+        registerReceiver();
         init();
 
         AUTOBACKLIGHT_SWITCH = SystemShare.getSettingBoolean(getActivity(), SystemShare.BRIGHTNESS_MODE_SWITCH, false); // 获取开关的状态
@@ -75,24 +75,24 @@ public class FragmentTwo extends Fragment implements View.OnClickListener {
         }
     }
 
-//    private void registerReceiver() {
-//        IntentFilter filter = new IntentFilter();
-//        filter.addAction(SystemShare.UPDATE_AUTOBACKLIGHT);
-//        getActivity().registerReceiver(receiver, filter);
-//    }
-//
-//    private final BroadcastReceiver receiver = new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            Log.e("UPDATE_AUTOBACKLIGHT", "UPDATE_AUTOBACKLIGHT");
-//            String action = intent.getAction();
-//             if (action.equals(SystemShare.UPDATE_AUTOBACKLIGHT)) {
-//                 AUTOBACKLIGHT_SWITCH = intent.getStringExtra(SystemShare.SYSTEM_AUTOBACKLIGHT_STAUTS).equals("1") ? true : false;
-//                 Log.e("UPDATE_BLUELIGHT", "AUTOBACKLIGHT_SWITCH = " + AUTOBACKLIGHT_SWITCH);
-//                 SystemShare.setSettingBoolean(getActivity(), SystemShare.BRIGHTNESS_MODE_SWITCH, AUTOBACKLIGHT_SWITCH);
-//            }
-//        }
-//    };
+    private void registerReceiver() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(SystemShare.UPDATE_AUTOBACKLIGHT);
+        getActivity().registerReceiver(receiver, filter);
+    }
+
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.e("UPDATE_AUTOBACKLIGHT", "UPDATE_AUTOBACKLIGHT");
+            String action = intent.getAction();
+             if (action.equals(SystemShare.UPDATE_AUTOBACKLIGHT)) {
+                 AUTOBACKLIGHT_SWITCH = intent.getStringExtra(SystemShare.SYSTEM_AUTOBACKLIGHT_STAUTS).equals("1") ? true : false;
+                 Log.e("UPDATE_BLUELIGHT", "AUTOBACKLIGHT_SWITCH = " + AUTOBACKLIGHT_SWITCH);
+                 SystemShare.setSettingBoolean(getActivity(), SystemShare.BRIGHTNESS_MODE_SWITCH, AUTOBACKLIGHT_SWITCH);
+            }
+        }
+    };
 
     @Override
     public void onResume() {

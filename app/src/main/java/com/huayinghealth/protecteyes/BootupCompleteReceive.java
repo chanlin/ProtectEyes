@@ -17,7 +17,6 @@ public class BootupCompleteReceive extends BroadcastReceiver {
     private boolean Reversal_switch = false;
     private boolean Doudo_switch = false;
     private boolean ResttimeSwitch = false;//休息时间开关
-    private boolean BT_SWITCH = false; // 光线感应开关
 	private boolean ColorSwitch = false;
     private int ColorValue = 50;
 
@@ -46,13 +45,6 @@ public class BootupCompleteReceive extends BroadcastReceiver {
                 rs_service.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startService(rs_service);
             }
-
-        }
-        Log.e("UPDATE_BLUELIGHT", "UPDATE_BLUELIGHT");
-        if (action.equals(SystemShare.UPDATE_BLUELIGHT)) {
-            BT_SWITCH = intent.getStringExtra(SystemShare.BULELIGHE_STATE).equals("1") ? true : false;
-            Log.e("UPDATE_BLUELIGHT", "BT_SWITCH = " + BT_SWITCH);
-            SystemShare.setSettingBoolean(mContext, SystemShare.BRIGHTNESS_MODE_SWITCH, BT_SWITCH);
         }
 		if(ColorSwitch){
                 Intent intent_color = new Intent("com.huaying.protecteyes.update_bluelight");
