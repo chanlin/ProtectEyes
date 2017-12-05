@@ -18,6 +18,7 @@ public class BootupCompleteReceive extends BroadcastReceiver {
     private boolean Doudo_switch = false;
     private boolean ResttimeSwitch = false;//休息时间开关
 	private boolean ColorSwitch = false;
+    private boolean AUTOBACKLIGHT_SWITCH = false; // 光线感应开关
     private int ColorValue = 50;
 
     @Override
@@ -51,6 +52,16 @@ public class BootupCompleteReceive extends BroadcastReceiver {
                 intent_color.putExtra("protect.eyes.update_bluelight_state","1");
                 intent_color.putExtra("protect.eyes.update_bluelight_progress",ColorValue);
                 mContext.sendBroadcast(intent_color);
+        }
+
+        /**
+         * 接收光线感应开关状态
+         * 20171205 by yangcl
+         * */
+        if (action.equals(SystemShare.UPDATE_AUTOBACKLIGHT)) {
+            AUTOBACKLIGHT_SWITCH = intent.getStringExtra(SystemShare.SYSTEM_AUTOBACKLIGHT_STAUTS).equals("1") ? true : false;
+            Log.e("AUTOBACKLIGHT_SWITCH", "AUTOBACKLIGHT_SWITCH = " + AUTOBACKLIGHT_SWITCH);
+            SystemShare.setSettingBoolean(mContext, SystemShare.BRIGHTNESS_MODE_SWITCH, AUTOBACKLIGHT_SWITCH);
         }
     }
 }

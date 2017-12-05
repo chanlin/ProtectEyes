@@ -120,6 +120,7 @@
             android:exported="true" android:enabled="true" android:process="system" >
             <intent-filter android:priority="1000">
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.update_autoBrightness" />
             </intent-filter>
         </receiver>
         </application>
