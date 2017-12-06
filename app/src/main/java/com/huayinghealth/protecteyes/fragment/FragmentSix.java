@@ -118,9 +118,9 @@ public class FragmentSix extends Fragment implements View.OnClickListener{
                 SystemShare.setSettingBoolean(getActivity(),SystemShare.colorOnOff,BT_SWITCH);
                 Intent intent = new Intent("com.huaying.protecteyes.update_bluelight");
                 if(BT_SWITCH){
-
+                    progress_value = SystemShare.getSettingInt(getActivity(),SystemShare.colorValue);
                     intent.putExtra("protect.eyes.update_bluelight_state","1");
-                    intent.putExtra("protect.eyes.update_bluelight_progress",50);
+                    intent.putExtra("protect.eyes.update_bluelight_progress",progress_value);
 
 
                    // SystemProperties.set("persist.sys.custom_bl_state","1");
