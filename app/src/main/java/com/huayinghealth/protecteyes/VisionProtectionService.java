@@ -198,7 +198,7 @@ public class VisionProtectionService extends Service {
             switch (msg.what) {
                 case 9999:
                     Log.e("wzb", "999 peak num=" + peak_num + " phone_in_doudo_status" + phone_in_doudo_status);
-                    if ((peak_num >= 4) && (phone_in_doudo_status == 0)) {
+                    if ((peak_num >= 8) && (phone_in_doudo_status == 0)) {
                         //Toast.makeText(mContext, "检测到颠簸!!!", Toast.LENGTH_SHORT).show();
                         remind_title = 3;
 						doudo_idle_status = false;
@@ -272,6 +272,52 @@ public class VisionProtectionService extends Service {
         public void onSensorChanged(SensorEvent sensorEvent) {
             PowerManager powerManager = (PowerManager) getSystemService(Service.POWER_SERVICE);
             Log.e("luwl", " --luwl_test- psensor=" + Psensor_switch + " reversal=" + Reversal_switch + " Doudo=" + Doudo_switch);
+            if ((sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) && (Reversal_switch || Doudo_switch)) {
+                if (sensorEvent.values[2] < -4) {
+                    sensorAccFanzanValue = 1;
+                } else {
+                    sensorAccFanzanValue = 0;
+                }
+
+                if (powerManager.isScreenOn()) {
+                    Log.e("luwl", " --luwl_test--sensorAccFanzanValue=" + sensorAccFanzanValue + " old=" + sensorAccFanzanValueOld);
+                    if (Reversal_switch) {
+                        if (sensorAccFanzanValue != sensorAccFanzanValueOld) {
+                            if (sensorAccFanzanValue == 1) {
+                                dismiss_Acc_Fanzan_when_not_fit_status = false;
+                                eye_protect_sound_select = 2;
+                                remind_title = 2;
+                                fanzan_idle_status = false;
+                                Log.e("luwl", " --luwl_test-TYPE_ACCELEROMETER-dialogThread start mTimerIsRunning=!!!" + mTimerIsRunning);
+                                dialogThread();
+                            } else {
+                                fanzan_idle_status = true;
+                                dismiss_animationDrawable_dialog();
+                                Log.e("luwl", " --luwl_test-TYPE_ACCELEROMETER from normal-dismiss_animationDrawable_dialog !!!");
+                            }
+                            sensorAccFanzanValueOld = sensorAccFanzanValue;
+                        }
+                    }
+                    if (Doudo_switch) {
+                        float xyz = sensorEvent.values[0] * sensorEvent.values[0]
+                                + sensorEvent.values[1] * sensorEvent.values[1]
+                                + sensorEvent.values[2] * sensorEvent.values[2];
+                        Log.e("wzb", "peak xyz=" + xyz + " " + sensorEvent.values[0] + " " + sensorEvent.values[1] + " " + sensorEvent.values[2]);
+                        parse_acc_data(xyz);
+                    }
+                } else {
+                    if ((dialog != null) && Reversal_switch) {
+                        if (dismiss_Acc_Fanzan_when_not_fit_status == false) {
+                            dismiss_Acc_Fanzan_when_not_fit_status = true;
+                            fanzan_idle_status = true;
+                            dismiss_animationDrawable_dialog();
+                            sensorAccFanzanValueOld = 0;
+                            Log.e("luwl", " --luwl_test-TYPE_ACCELEROMETER from screen off-dismiss_animationDrawable_dialog !!!");
+                        }
+                    }
+                }
+            }
+
             if ((sensorEvent.sensor.getType() == Sensor.TYPE_PROXIMITY) && Psensor_switch) {
                 sensorProximityValue = sensorEvent.values[0];
                 if (powerManager.isScreenOn() && (getResources().getConfiguration().orientation ==
@@ -307,55 +353,10 @@ public class VisionProtectionService extends Service {
                 }
             }
 
-            if ((sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) && (Reversal_switch || Doudo_switch)) {
-                if (sensorEvent.values[2] < -4) {
-                    sensorAccFanzanValue = 1;
-                } else {
-                    sensorAccFanzanValue = 0;
-                }
-
-                if (powerManager.isScreenOn()) {
-                    Log.e("luwl", " --luwl_test--sensorAccFanzanValue=" + sensorAccFanzanValue + " old=" + sensorAccFanzanValueOld);
-                    if (Reversal_switch) {
-                        if (sensorAccFanzanValue != sensorAccFanzanValueOld) {
-                            if (sensorAccFanzanValue == 1) {
-                                dismiss_Acc_Fanzan_when_not_fit_status = false;
-                                eye_protect_sound_select = 2;
-                                remind_title = 2;
-								fanzan_idle_status = false;
-                                Log.e("luwl", " --luwl_test-TYPE_ACCELEROMETER-dialogThread start mTimerIsRunning=!!!" + mTimerIsRunning);
-                                dialogThread();
-                            } else {
-								fanzan_idle_status = true;
-                                dismiss_animationDrawable_dialog();
-                                Log.e("luwl", " --luwl_test-TYPE_ACCELEROMETER from normal-dismiss_animationDrawable_dialog !!!");
-                            }
-                            sensorAccFanzanValueOld = sensorAccFanzanValue;
-                        }
-                    }
-                    if (Doudo_switch) {
-                        float xyz = sensorEvent.values[0] * sensorEvent.values[0]
-                                + sensorEvent.values[1] * sensorEvent.values[1]
-                                + sensorEvent.values[2] * sensorEvent.values[2];
-                        Log.e("wzb", "peak xyz=" + xyz + " " + sensorEvent.values[0] + " " + sensorEvent.values[1] + " " + sensorEvent.values[2]);
-                        parse_acc_data(xyz);
-                    }
-                } else {
-                    if ((dialog != null) && Reversal_switch) {
-                        if (dismiss_Acc_Fanzan_when_not_fit_status == false) {
-                            dismiss_Acc_Fanzan_when_not_fit_status = true;
-							fanzan_idle_status = true;
-                            dismiss_animationDrawable_dialog();
-                            sensorAccFanzanValueOld = 0;
-                            Log.e("luwl", " --luwl_test-TYPE_ACCELEROMETER from screen off-dismiss_animationDrawable_dialog !!!");
-							}
-						}
-					  }
-				   }
-				   if(psensor_idle_status == true && fanzan_idle_status == true && doudo_idle_status == true) {
-					   if(dialog.isShowing()){
-						   dialog.dismiss();
-					   }
+           if(psensor_idle_status == true && fanzan_idle_status == true && doudo_idle_status == true) {
+               if(dialog.isShowing()){
+                   dialog.dismiss();
+               }
             }
         }
 
