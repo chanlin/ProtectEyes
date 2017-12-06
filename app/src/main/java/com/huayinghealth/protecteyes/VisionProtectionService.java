@@ -58,7 +58,6 @@ public class VisionProtectionService extends Service {
     private boolean dismiss_Acc_Fanzan_when_not_fit_status = false;
     private ImageView vp_animation = null;
     private TextView text_remind;
-    private FrameLayout fl_remind;
     private static SoundPool soundPoollight = null;
     private static HashMap<String, Integer> soundPoolMaplight;
     private AnimationDrawable animationDrawable;
@@ -434,19 +433,18 @@ public class VisionProtectionService extends Service {
             dialog.getWindow().setLayout(840, 767);
             text_remind = (TextView) dialog.findViewById(R.id.text_remind);
             vp_animation = (ImageView) dialog.findViewById(R.id.vp_animation);
-            fl_remind = (FrameLayout) dialog.findViewById(R.id.fl_remind);
             if (remind_title == 1) {
 //                vp_animation.setImageResource(R.drawable.vision_protection_ani);
 //                animationDrawable = (AnimationDrawable) vp_animation.getDrawable();
 //                animationDrawable.start();
-                fl_remind.setBackgroundResource(R.mipmap.icon_remind1);
+                window.setBackgroundDrawableResource(R.mipmap.icon_remind1);
 //                vp_animation.setImageResource(R.mipmap.icon_remind1);
                 text_remind.setText("平板与眼睛距离过近对眼睛不好！");
             } else if (remind_title == 2) {
-                fl_remind.setBackgroundResource(R.mipmap.icon_remind3);
+                window.setBackgroundDrawableResource(R.mipmap.icon_remind3);
                 text_remind.setText("躺着看对眼睛不好,请不要躺着看屏幕！");
             } else if (remind_title == 3) {
-                fl_remind.setBackgroundResource(R.mipmap.icon_remind4);
+                window.setBackgroundDrawableResource(R.mipmap.icon_remind4);
 //                vp_animation.setImageResource(R.mipmap.icon_remind4);
                 text_remind.setText("在晃动平板时看屏幕对眼睛不好!");
             }
