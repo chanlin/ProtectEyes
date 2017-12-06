@@ -54,6 +54,8 @@ public class FragmentSix extends Fragment implements View.OnClickListener{
 
         seekBar = (SeekBar) getActivity().findViewById(R.id.sb_colortemperature);
         seekBar.setProgress(progress_value);
+        seekBar.setEnabled(BT_SWITCH);
+
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
@@ -128,8 +130,10 @@ public class FragmentSix extends Fragment implements View.OnClickListener{
                 }else{
                     //SystemProperties.set("persist.sys.custom_bl_state","0");
                     intent.putExtra("protect.eyes.update_bluelight_state","0");
+
                     //sendBroadcast(new Intent("com.android.custom.update_bluelight"));
                 }
+                seekBar.setEnabled(BT_SWITCH);
                 getActivity().sendBroadcast(intent);
                 break;
             default:
