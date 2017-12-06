@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fl_remind"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_remind"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
@@ -9,18 +9,20 @@
 
     <ImageView
         android:id="@+id/vp_animation"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_gravity="center_horizontal" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:src="@mipmap/icon_remind1"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/text_remind"
         android:layout_width="match_parent"
         android:layout_height="57dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="170dp"
+        android:layout_marginTop="195dp"
         android:gravity="center"
         android:text="平板与眼睛距离过近对眼睛不好！"
-        android:textColor="@color/black"
+        android:textColor="@color/gray"
         android:textSize="12sp" />
-</FrameLayout>
+</LinearLayout>

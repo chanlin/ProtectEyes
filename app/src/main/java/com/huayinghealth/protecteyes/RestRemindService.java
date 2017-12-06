@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
@@ -98,8 +99,10 @@ public class RestRemindService extends Service {
             }
         });
         dialog.show();
-        dialog.setContentView(R.layout.dialog_restremine);
+        Window window = dialog.getWindow();
+        window.setContentView(R.layout.dialog_restremine);
         dialog.getWindow().setLayout(840, 767);
+        window.setBackgroundDrawableResource(R.mipmap.icon_remind2);
         btn_back = (Button) dialog.findViewById(R.id.btn_Back);
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
