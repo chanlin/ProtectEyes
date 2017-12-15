@@ -201,6 +201,9 @@ public class VisionProtectionService extends Service {
                         //Toast.makeText(mContext, "检测到颠簸!!!", Toast.LENGTH_SHORT).show();
                         remind_title = 3;
 						doudo_idle_status = false;
+                        if (dialog != null) {
+                            dialog.dismiss();
+                        }
                         handler.sendEmptyMessage(0);
                         lightplayAuio(AUDIO_DOUDO_PROTECTION_OPEN);
                         phone_in_doudo_status = 1;
@@ -271,6 +274,42 @@ public class VisionProtectionService extends Service {
         public void onSensorChanged(SensorEvent sensorEvent) {
             PowerManager powerManager = (PowerManager) getSystemService(Service.POWER_SERVICE);
             Log.e("luwl", " --luwl_test- psensor=" + Psensor_switch + " reversal=" + Reversal_switch + " Doudo=" + Doudo_switch);
+
+
+            if ((sensorEvent.sensor.getType() == Sensor.TYPE_PROXIMITY) && Psensor_switch ) {
+                sensorProximityValue = sensorEvent.values[0];
+                if (powerManager.isScreenOn() && (getResources().getConfiguration().orientation ==
+                        Configuration.ORIENTATION_LANDSCAPE) && !isLauncher(mContext)) {
+                    Log.e("luwl", " --luwl_test--sensorProximityValue=" + sensorProximityValue + " old=" + sensorProximityValueOld);
+                    if (sensorProximityValue != sensorProximityValueOld) {
+
+                        if (sensorProximityValue == 0.0 && sensorAccFanzanValue == 0) {
+                            dismiss_when_not_fit_status = false;
+							psensor_idle_status = false;
+                            eye_protect_sound_select = 1;
+                            remind_title = 1;
+                            Log.e("luwl", " --luwl_test-TYPE_PROXIMITY-dialogThread start mTimerIsRunning=!!!" + mTimerIsRunning);
+                            dialogThread();
+                        } else if (sensorProximityValue != 0){
+						    psensor_idle_status = true;
+                            dismiss_animationDrawable_dialog();
+                            Log.e("luwl", " --luwl_test-TYPE_PROXIMITY-from close-dismiss_animationDrawable_dialog=");
+                        }
+                        sensorProximityValueOld = sensorProximityValue;
+                    }
+
+                } else {
+                    if (dialog != null) {
+                        if (dismiss_when_not_fit_status == false) {
+                            dismiss_when_not_fit_status = true;
+                            sensorProximityValueOld = 1f;
+							psensor_idle_status = true;
+                            dismiss_animationDrawable_dialog();
+                            Log.e("luwl", " --luwl_test-TYPE_PROXIMITY-from not fit-dismiss_animationDrawable_dialog");
+                        }
+                    }
+                }
+            }
             if ((sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) && (Reversal_switch || Doudo_switch)) {
                 if (sensorEvent.values[2] < -4) {
                     sensorAccFanzanValue = 1;
@@ -316,42 +355,6 @@ public class VisionProtectionService extends Service {
                     }
                 }
             }
-
-            if ((sensorEvent.sensor.getType() == Sensor.TYPE_PROXIMITY) && Psensor_switch) {
-                sensorProximityValue = sensorEvent.values[0];
-                if (powerManager.isScreenOn() && (getResources().getConfiguration().orientation ==
-                        Configuration.ORIENTATION_LANDSCAPE) && !isLauncher(mContext)) {
-                    Log.e("luwl", " --luwl_test--sensorProximityValue=" + sensorProximityValue + " old=" + sensorProximityValueOld);
-                    if (sensorProximityValue != sensorProximityValueOld) {
-
-                        if (sensorProximityValue == 0.0) {
-                            dismiss_when_not_fit_status = false;
-							psensor_idle_status = false;
-                            eye_protect_sound_select = 1;
-                            remind_title = 1;
-                            Log.e("luwl", " --luwl_test-TYPE_PROXIMITY-dialogThread start mTimerIsRunning=!!!" + mTimerIsRunning);
-                            dialogThread();
-                        } else {
-						    psensor_idle_status = true;
-                            dismiss_animationDrawable_dialog();
-                            Log.e("luwl", " --luwl_test-TYPE_PROXIMITY-from close-dismiss_animationDrawable_dialog=");
-                        }
-                        sensorProximityValueOld = sensorProximityValue;
-                    }
-
-                } else {
-                    if (dialog != null) {
-                        if (dismiss_when_not_fit_status == false) {
-                            dismiss_when_not_fit_status = true;
-                            sensorProximityValueOld = 1f;
-							psensor_idle_status = true;
-                            dismiss_animationDrawable_dialog();
-                            Log.e("luwl", " --luwl_test-TYPE_PROXIMITY-from not fit-dismiss_animationDrawable_dialog=");
-                        }
-                    }
-                }
-            }
-
            if(psensor_idle_status == true && fanzan_idle_status == true && doudo_idle_status == true) {
                if(dialog.isShowing()){
                    dialog.dismiss();
@@ -395,6 +398,9 @@ public class VisionProtectionService extends Service {
                 public void run() {
                     if (num1 == 0) {
                         timer.cancel();
+                        if (dialog != null) {
+                            dialog.dismiss();
+                        }
                         handler.sendEmptyMessage(0);
                         if (eye_protect_sound_select == 1) {
                             lightplayAuio(AUDIO_VISION_PROTECTION_OPEN);
