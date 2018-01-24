@@ -29,10 +29,11 @@ import java.util.List;
  */
 public class FragmentOne  extends Fragment implements View.OnClickListener {
 
-    public static Boolean BT_SWITCH = false;//开关默认关闭
+    public static Boolean BT_SWITCH = SystemShare.PSENSOR_DEFAULT_STATUS;//开关默认关闭
     private RadioButton rb_EyeProtect;
 	Intent vp_service;
     private static final String OnOff = "OnOff";
+    Context ont_content;
 
     @Nullable
     @Override
@@ -45,9 +46,10 @@ public class FragmentOne  extends Fragment implements View.OnClickListener {
         super.onActivityCreated(savedInstanceState);
         vp_service = new Intent(getActivity(), VisionProtectionService.class);
         vp_service.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        ont_content = getActivity().getApplicationContext();
         init();
 
-        BT_SWITCH = SystemShare.getSettingBoolean(getActivity().getApplicationContext(),SystemShare.EyeProtectSwitch, false); // 获取开关的状态
+        BT_SWITCH = SystemShare.getSettingBoolean(ont_content,SystemShare.EyeProtectSwitch, SystemShare.PSENSOR_DEFAULT_STATUS); // 获取开关的状态
         rb_EyeProtect.setChecked(BT_SWITCH);
     }
 
@@ -63,7 +65,7 @@ public class FragmentOne  extends Fragment implements View.OnClickListener {
             case R.id.switch_EyeProtect:
                 rb_EyeProtect.setChecked(BT_SWITCH ? false : true);
                 BT_SWITCH = BT_SWITCH ? false : true;
-                SystemShare.setSettingBoolean(getActivity().getApplicationContext(),SystemShare.EyeProtectSwitch, BT_SWITCH);
+                SystemShare.setSettingBoolean(ont_content,SystemShare.EyeProtectSwitch, BT_SWITCH);
                 // 眼距保护开关指令
                 Intent intent = new Intent(SystemShare.PSENSOR_INTENT_NAME);
 				intent.putExtra(SystemShare.PSENSOR_INTENT_STATUS, BT_SWITCH);
@@ -71,7 +73,12 @@ public class FragmentOne  extends Fragment implements View.OnClickListener {
 				if (BT_SWITCH) {
                     Log.e("sendbroadcast", "luwl_test-打开眼距保护");
                     Toast.makeText(getActivity(), "打开", Toast.LENGTH_SHORT).show();
-                    
+                    if (!isServiceExisted(ont_content, "com.huayinghealth.protecteyes.VisionProtectionService") ) {
+                        Intent vp_service = new Intent(ont_content, VisionProtectionService.class);
+                        vp_service.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        ont_content.startService(vp_service);
+                        Log.e("BootBroadcastTeceiver", "-BT_SWITCH-luwl_apk-启动服务 " + "start ACTION_TIME_TICK act VisionProtectionService");
+                    }
                 } else {
                     Log.e("sendbroadcast", "luwl_test 关闭眼距保护");
                     Toast.makeText(getActivity(), "关闭", Toast.LENGTH_SHORT).show();
@@ -105,7 +112,7 @@ public class FragmentOne  extends Fragment implements View.OnClickListener {
                 }else {
                     if (!(BT_SWITCH || FragmentFour.BT_FANZAN_SWITCH || FragmentFive.BT_DOUDO_SWITCH) && isServiceExisted(context, "com.huayinghealth.protecteyes.VisionProtectionService")) {
                         Log.e("BootBroadcastTeceiver", "luwl_apk-关闭 " + "stop ACTION_TIME_TICK act VisionProtectionService");
-//                        Toast.makeText(getActivity(), "关闭", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "关闭", Toast.LENGTH_SHORT).show();
                         Intent vp_service = new Intent(getActivity(), VisionProtectionService.class);
                         vp_service.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         getActivity().stopService(vp_service);
@@ -132,7 +139,7 @@ public class FragmentOne  extends Fragment implements View.OnClickListener {
 
             if (serviceName.getClassName().equals(className)) {
 //                Log.e("BootBroadcastTeceiver", "isServiceExisted " + "return true");
-                return true;
+                    return true;
             }
         }
 //        Log.e("BootBroadcastTeceiver", "isServiceExisted " + "return false");

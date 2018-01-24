@@ -13,7 +13,7 @@ import com.huayinghealth.protecteyes.utils.SystemShare;
 
 public class BootupCompleteReceive extends BroadcastReceiver {
     Context mContext;
-    private boolean Psensor_switch = false;
+    private boolean Psensor_switch = SystemShare.PSENSOR_DEFAULT_STATUS;
     private boolean Reversal_switch = false;
     private boolean Doudo_switch = false;
     private boolean ResttimeSwitch = false;//休息时间开关
@@ -28,7 +28,7 @@ public class BootupCompleteReceive extends BroadcastReceiver {
         Log.e("wzb","--luwl--shutdownandboottimeReceiver: aciton="+action);
         if(action.equals("android.intent.action.BOOT_COMPLETED")) {
 
-            Psensor_switch = SystemShare.getSettingBoolean(mContext,SystemShare.EyeProtectSwitch,false);
+            Psensor_switch = SystemShare.getSettingBoolean(mContext,SystemShare.EyeProtectSwitch,SystemShare.PSENSOR_DEFAULT_STATUS);
             Reversal_switch = SystemShare.getSettingBoolean(mContext,SystemShare.ReversalSwitch,false);
             Doudo_switch = SystemShare.getSettingBoolean(mContext,SystemShare.ShakeRemindSwitch,false);
             ResttimeSwitch = SystemShare.getSettingBoolean(mContext,SystemShare.ResttimeSwitch,false);

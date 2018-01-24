@@ -19,6 +19,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -69,14 +70,15 @@ public class VisionProtectionService extends Service {
     private static final String AUDIO_FANZAN_PROTECTION_PATH = "/system/media/audio/notifications/audio_fanzan_wainning.mp3";
     private static final String AUDIO_DOUDO_PROTECTION_PATH = "/system/media/audio/notifications/audio_doudo_wainning.mp3";
 
-    private boolean Psensor_switch = false;
+    private boolean Psensor_switch = SystemShare.PSENSOR_DEFAULT_STATUS;
     private boolean Reversal_switch = false;
     private boolean Doudo_switch = false;
 
     private int remind_title; // 提醒状态1、眼距提醒 2、反转提醒 3、抖动提醒
 
     float sensorProximityValue = 0f;
-    float sensorProximityValueOld = 1f;
+    float sensorProximityValueOld = 10.0f;
+    float sensorProximityValueOld_default = 1f;
     int sensorAccFanzanValue = 0;
     int sensorAccFanzanValueOld = 1;
     int ps_orientation = 0;
@@ -94,9 +96,11 @@ public class VisionProtectionService extends Service {
     int peak_num = 0;
     int phone_in_doudo_status = 0;
     int phone_in_doudo_stop_counter = 0;
-	private boolean psensor_idle_status = false;
-	private boolean fanzan_idle_status = false;
-	private boolean doudo_idle_status = false;
+	private boolean psensor_idle_status = true;
+	private boolean fanzan_idle_status = true;
+	private boolean doudo_idle_status = true;
+	int doudo_active_set_time = 0;
+	int doudo_value_level = 0;
 
     public IBinder onBind(Intent intent) {
 
@@ -107,13 +111,22 @@ public class VisionProtectionService extends Service {
 
         mContext = getBaseContext();
         lightLoadingAudio();
-        Log.d(TAG, "------on create VisionProtectionService--------");
+        Log.d(TAG, "------on create VisionProtectionService--------" + "build_android_ver=" + Build.VERSION.SDK_INT);
+		if(Build.VERSION.SDK_INT == 23){   //android6.0
+            doudo_active_set_time = 8;
+            doudo_value_level = 120;
+            sensorProximityValueOld_default = 1f;
+		}else{    //android7.0
+            doudo_active_set_time = 5;
+            doudo_value_level = 160;
+            sensorProximityValueOld_default = 10.0f;
+		}
         getState();
         registerReceiver();
     }
 
     private void getState() {
-        Psensor_switch = SystemShare.getSettingBoolean(mContext, SystemShare.EyeProtectSwitch, false);
+        Psensor_switch = SystemShare.getSettingBoolean(mContext, SystemShare.EyeProtectSwitch, SystemShare.PSENSOR_DEFAULT_STATUS);
         Reversal_switch = SystemShare.getSettingBoolean(mContext, SystemShare.ReversalSwitch, false);
         Doudo_switch = SystemShare.getSettingBoolean(mContext, SystemShare.ShakeRemindSwitch, false);
     }
@@ -196,8 +209,8 @@ public class VisionProtectionService extends Service {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 9999:
-                    Log.e("wzb", "999 peak num=" + peak_num + " phone_in_doudo_status" + phone_in_doudo_status);
-                    if ((peak_num >= 8) && (phone_in_doudo_status == 0)) {
+                    Log.e("wzb", "--luwl_doudo--999 peak num=" + peak_num + " phone_in_doudo_status" + phone_in_doudo_status);
+                    if ((peak_num >= doudo_active_set_time) && (phone_in_doudo_status == 0)) {
                         //Toast.makeText(mContext, "检测到颠簸!!!", Toast.LENGTH_SHORT).show();
                         remind_title = 3;
 						doudo_idle_status = false;
@@ -207,6 +220,7 @@ public class VisionProtectionService extends Service {
                         handler.sendEmptyMessage(0);
                         lightplayAuio(AUDIO_DOUDO_PROTECTION_OPEN);
                         phone_in_doudo_status = 1;
+                        Log.e(TAG, "----------" + "build_android_ver=" + Build.VERSION.SDK_INT);
                         //这里触发检测到抖动.可以发送一个广播,然后app接收到广播后做相应的界面提示
                     }
                     peak_num = 0;
@@ -228,13 +242,14 @@ public class VisionProtectionService extends Service {
                 if (peak_num == 1) {
                     mHandler_doudo.sendEmptyMessageDelayed(9999, 2000);
                 }
-                Log.e("wzb", "peak_num=" + peak_num);
+                Log.e("wzb", "--luwl_doudo--peak_num=" + peak_num);
 
             } else {
                 if (phone_in_doudo_status == 1) {
                     phone_in_doudo_stop_counter++;
                     Log.e("wzb", "peak phone_in_doudo_stop_counter=" + phone_in_doudo_stop_counter);
                     if (phone_in_doudo_stop_counter > 20) {
+                        Log.e("wzb", "--luwl_doudo--peak dismiss dialog");
                         phone_in_doudo_stop_counter = 0;
                         phone_in_doudo_status = 0;
 						doudo_idle_status = true;
@@ -257,8 +272,8 @@ public class VisionProtectionService extends Service {
             continueUpCount = 0;
             isDirectionUp = false;
         }
-
-        if (!isDirectionUp && lastStatus && (continueUpFormerCount >= 1 && oldValue >= 120)) {
+        //Log.e("wzb", "--luwl_doudo--detectorPeak=" + newValue + " " + oldValue + " " + isDirectionUp + " " + lastStatus + " " + continueUpFormerCount + " " + continueUpCount);
+        if (!isDirectionUp && lastStatus && (continueUpFormerCount >= 1 && oldValue >= doudo_value_level)) {
             peakOfWave = oldValue;
             return true;
         } else if (!lastStatus && isDirectionUp) {
@@ -273,16 +288,16 @@ public class VisionProtectionService extends Service {
         @Override
         public void onSensorChanged(SensorEvent sensorEvent) {
             PowerManager powerManager = (PowerManager) getSystemService(Service.POWER_SERVICE);
-            Log.e("luwl", " --luwl_test- psensor=" + Psensor_switch + " reversal=" + Reversal_switch + " Doudo=" + Doudo_switch);
+            //Log.e("luwl", " --luwl_test- psensor=" + Psensor_switch + " reversal=" + Reversal_switch + " Doudo=" + Doudo_switch);
 
 
             if ((sensorEvent.sensor.getType() == Sensor.TYPE_PROXIMITY) && Psensor_switch ) {
                 sensorProximityValue = sensorEvent.values[0];
+                Log.e("luwl", " --luwl_test-11-sensorProximityValue=" + sensorProximityValue);
                 if (powerManager.isScreenOn() && (getResources().getConfiguration().orientation ==
-                        Configuration.ORIENTATION_LANDSCAPE) && !isLauncher(mContext)) {
-                    Log.e("luwl", " --luwl_test--sensorProximityValue=" + sensorProximityValue + " old=" + sensorProximityValueOld);
+                        Configuration.ORIENTATION_LANDSCAPE)) {
+                    Log.e("luwl", " --luwl_test-22-sensorProximityValue=" + sensorProximityValue + " old=" + sensorProximityValueOld);
                     if (sensorProximityValue != sensorProximityValueOld) {
-
                         if (sensorProximityValue == 0.0 && sensorAccFanzanValue == 0) {
                             dismiss_when_not_fit_status = false;
 							psensor_idle_status = false;
@@ -302,7 +317,7 @@ public class VisionProtectionService extends Service {
                     if (dialog != null) {
                         if (dismiss_when_not_fit_status == false) {
                             dismiss_when_not_fit_status = true;
-                            sensorProximityValueOld = 1f;
+                            sensorProximityValueOld = sensorProximityValueOld_default;
 							psensor_idle_status = true;
                             dismiss_animationDrawable_dialog();
                             Log.e("luwl", " --luwl_test-TYPE_PROXIMITY-from not fit-dismiss_animationDrawable_dialog");
@@ -310,6 +325,7 @@ public class VisionProtectionService extends Service {
                     }
                 }
             }
+
             if ((sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) && (Reversal_switch || Doudo_switch)) {
                 if (sensorEvent.values[2] < -4) {
                     sensorAccFanzanValue = 1;
@@ -355,11 +371,16 @@ public class VisionProtectionService extends Service {
                     }
                 }
             }
+
+           // Log.e("luwl", " --luwl_idle- psensor=" + psensor_idle_status + " reversal=" + fanzan_idle_status + " Doudo=" + doudo_idle_status + " " + sensorProximityValue);
            if(psensor_idle_status == true && fanzan_idle_status == true && doudo_idle_status == true) {
-               if(dialog.isShowing()){
-                   dialog.dismiss();
+               if(dialog != null){
+                   Log.e("luwl", "luwl--dialog dismiss for all idle");
+                   if(dialog.isShowing())
+                       dialog.dismiss();
                }
             }
+
         }
 
         @Override
@@ -387,7 +408,7 @@ public class VisionProtectionService extends Service {
         mTimerIsRunning = false;
         num1 = 2;
         sensorAccFanzanValueOld = 0;
-        sensorProximityValueOld = 1f;
+        sensorProximityValueOld = sensorProximityValueOld_default;
     }
 
     private void dialogThread() {
@@ -508,7 +529,7 @@ public class VisionProtectionService extends Service {
             String action = intent.getAction();
             mContext = context;
             if (action.equals(SystemShare.PSENSOR_INTENT_NAME)) {
-                Psensor_switch = intent.getBooleanExtra(SystemShare.PSENSOR_INTENT_STATUS, false);
+                Psensor_switch = intent.getBooleanExtra(SystemShare.PSENSOR_INTENT_STATUS, SystemShare.PSENSOR_DEFAULT_STATUS);
             }
             if (action.equals(SystemShare.REVERSAL_INTENT_NAME)) {
                 Reversal_switch = intent.getBooleanExtra(SystemShare.REVERSAL_INTENT_STATUS, false);
