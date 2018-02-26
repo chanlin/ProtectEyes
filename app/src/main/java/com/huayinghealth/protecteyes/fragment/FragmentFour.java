@@ -31,7 +31,7 @@ public class FragmentFour extends Fragment implements View.OnClickListener {
 
     public static Boolean BT_FANZAN_SWITCH = false;//开关默认关闭
     private RadioButton rb_Reversal;
-
+    Context four_content;
     private static final String OnOff = "OnOff";
 
     @Nullable
@@ -43,8 +43,9 @@ public class FragmentFour extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        four_content = getActivity().getApplicationContext();
         init();
-        BT_FANZAN_SWITCH = SystemShare.getSettingBoolean(getActivity().getApplicationContext(),SystemShare.ReversalSwitch, false); // 获取开关的状态
+        BT_FANZAN_SWITCH = SystemShare.getSettingBoolean(four_content,SystemShare.ReversalSwitch, false); // 获取开关的状态
         rb_Reversal.setChecked(BT_FANZAN_SWITCH);
     }
 
@@ -61,7 +62,7 @@ public class FragmentFour extends Fragment implements View.OnClickListener {
 				
                 rb_Reversal.setChecked(BT_FANZAN_SWITCH ? false : true);
                 BT_FANZAN_SWITCH = BT_FANZAN_SWITCH ? false : true;
-                SystemShare.setSettingBoolean(getActivity().getApplicationContext(),SystemShare.ReversalSwitch, BT_FANZAN_SWITCH);
+                SystemShare.setSettingBoolean(four_content,SystemShare.ReversalSwitch, BT_FANZAN_SWITCH);
                 
 				Intent intent = new Intent(SystemShare.REVERSAL_INTENT_NAME);
 				intent.putExtra(SystemShare.REVERSAL_INTENT_STATUS, BT_FANZAN_SWITCH);
@@ -70,6 +71,12 @@ public class FragmentFour extends Fragment implements View.OnClickListener {
                 if (BT_FANZAN_SWITCH) {
                     Log.e("sendbroadcast", "--luwl_apk--open fanzan func");
                     Toast.makeText(getActivity(), "打开", Toast.LENGTH_SHORT).show();
+                    if (!FragmentOne.isServiceExisted(four_content, "com.huayinghealth.protecteyes.VisionProtectionService") ) {
+                        Intent vp_service = new Intent(four_content, VisionProtectionService.class);
+                        vp_service.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        four_content.startService(vp_service);
+                        Log.e("BootBroadcastTeceiver", "-BT_SWITCH-luwl_apk-启动服务 " + "start ACTION_TIME_TICK act VisionProtectionService");
+                    }
                 } else {
                     Log.e("sendbroadcast", "--luwl_apk--close fanzan func");
                     Toast.makeText(getActivity(), "关闭", Toast.LENGTH_SHORT).show();

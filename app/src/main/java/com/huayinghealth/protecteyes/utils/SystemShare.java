@@ -15,6 +15,7 @@ public class SystemShare {
 
     public static String sixEnable = "sixEnable";
     public static String sixProgress = "sixProgress";
+    public static Boolean PSENSOR_DEFAULT_STATUS = true;
 
     public static final String EyeProtectSwitch = "EyeProtectSwitch"; // 视力开关
     public static final String ReversalSwitch = "ReversalSwitch"; // 视力开关

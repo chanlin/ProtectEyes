@@ -30,7 +30,7 @@ public class FragmentFive extends Fragment implements View.OnClickListener {
 
     public static Boolean BT_DOUDO_SWITCH = false;//开关默认关闭
     private RadioButton rb_ShakeRemind;
-
+    Context five_content;
 
     @Nullable
     @Override
@@ -41,8 +41,9 @@ public class FragmentFive extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        five_content = getActivity().getApplicationContext();
         init();
-        BT_DOUDO_SWITCH = SystemShare.getSettingBoolean(getActivity().getApplicationContext(),SystemShare.ShakeRemindSwitch, false); // 获取开关的状态
+        BT_DOUDO_SWITCH = SystemShare.getSettingBoolean(five_content,SystemShare.ShakeRemindSwitch, false); // 获取开关的状态
         rb_ShakeRemind.setChecked(BT_DOUDO_SWITCH);
     }
 
@@ -80,7 +81,7 @@ public class FragmentFive extends Fragment implements View.OnClickListener {
 				
                 rb_ShakeRemind.setChecked(BT_DOUDO_SWITCH ? false : true);
                 BT_DOUDO_SWITCH = BT_DOUDO_SWITCH ? false : true;
-                SystemShare.setSettingBoolean(getActivity().getApplicationContext(),SystemShare.ShakeRemindSwitch, BT_DOUDO_SWITCH);
+                SystemShare.setSettingBoolean(five_content,SystemShare.ShakeRemindSwitch, BT_DOUDO_SWITCH);
 
                 Intent intent = new Intent(SystemShare.DOUDO_INTENT_NAME);
 				intent.putExtra(SystemShare.DOUDO_INTENT_STATUS, BT_DOUDO_SWITCH);
@@ -89,6 +90,12 @@ public class FragmentFive extends Fragment implements View.OnClickListener {
                 if (BT_DOUDO_SWITCH) {
                     Log.e("sendbroadcast", "--luwl_apk--open doudo func");
                     Toast.makeText(getActivity(), "打开", Toast.LENGTH_SHORT).show();
+                    if (!FragmentOne.isServiceExisted(five_content, "com.huayinghealth.protecteyes.VisionProtectionService") ) {
+                        Intent vp_service = new Intent(five_content, VisionProtectionService.class);
+                        vp_service.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        five_content.startService(vp_service);
+                        Log.e("BootBroadcastTeceiver", "-BT_SWITCH-luwl_apk-启动服务 " + "start ACTION_TIME_TICK act VisionProtectionService");
+                    }
                 } else {
                     Log.e("sendbroadcast", "--luwl_apk--close doudo func");
                     Toast.makeText(getActivity(), "关闭", Toast.LENGTH_SHORT).show();
