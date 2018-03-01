@@ -1,7 +1,6 @@
 package com.huayinghealth.protecteyes;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.Service;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -29,7 +28,7 @@ import java.util.TimerTask;
 public class RestRemindService extends Service {
 
 //    RestRemindDialog dialog;
-    Dialog dialog;
+    AlertDialog dialog;
 
     private int learntime = 0;
     private Button btn_back;
@@ -84,8 +83,7 @@ public class RestRemindService extends Service {
     private void CreateDialog() {
 //        dialog = new RestRemindDialog(getBaseContext());
         AlertDialog.Builder builder = new AlertDialog.Builder(getBaseContext());
-//        dialog = builder.create();
-        dialog = new Dialog(getBaseContext(), R.style.mydialog);
+        dialog = builder.create();
         dialog.setCanceledOnTouchOutside(false);
         dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         dialog.setCancelable(false);
@@ -103,8 +101,8 @@ public class RestRemindService extends Service {
         dialog.show();
         Window window = dialog.getWindow();
         window.setContentView(R.layout.dialog_restremine);
-//        dialog.getWindow().setLayout(840, 767);
-//        window.setBackgroundDrawableResource(R.mipmap.icon_remind2);
+        dialog.getWindow().setLayout(840, 767);
+        window.setBackgroundDrawableResource(R.mipmap.icon_remind2);
         btn_back = (Button) dialog.findViewById(R.id.btn_Back);
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override

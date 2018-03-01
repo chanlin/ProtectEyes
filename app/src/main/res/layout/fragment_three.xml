@@ -7,7 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:background="@mipmap/icon_protect1"
+        android:background="@mipmap/icon_protect13"
         android:orientation="vertical">
 
         <RadioButton
@@ -25,13 +25,13 @@
             android:layout_marginLeft="25dp"
             android:layout_marginTop="10dp"
             android:text="@string/title_three_hint"
-            android:textColor="@color/white"
+            android:textColor="@color/gray"
             android:textSize="12sp" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="0.5dp"
         android:background="@color/graycc" />
 
     <LinearLayout
@@ -115,7 +115,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="0.5dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="20dp"
