@@ -1,7 +1,9 @@
 package com.huayinghealth.protecteyes;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Service;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -9,9 +11,14 @@ import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 
 import com.huayinghealth.protecteyes.dialog.RestRemindDialog;
+import com.huayinghealth.protecteyes.utils.SystemShare;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -22,14 +29,11 @@ import java.util.TimerTask;
 public class RestRemindService extends Service {
 
 //    RestRemindDialog dialog;
-    AlertDialog dialog;
-    private static final String OnOff = "OnOff";
-    private static final String LearnTime = "LearnTime"; // 学习时长
+    Dialog dialog;
 
     private int learntime = 0;
+    private Button btn_back;
 
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
 
     final Handler handler = new Handler() {
         public void handleMessage(Message msg) {
@@ -62,8 +66,8 @@ public class RestRemindService extends Service {
     public void onCreate() {
         super.onCreate();
         Log.e("RestRemindService", "onCreat");
-        sharedPreferences = getBaseContext().getSharedPreferences(OnOff, getBaseContext().MODE_PRIVATE);
-        learntime = sharedPreferences.getInt(LearnTime, 0);
+        learntime = SystemShare.getSettingInt(getBaseContext(),SystemShare.LearnTime,45);
+
         Log.e("learntime=", learntime + "");
 //        timer.schedule(task,longtime * 60 * 1000); //延时1000ms后执行，1000ms执行一次
         if (learntime != 0) {
@@ -80,12 +84,34 @@ public class RestRemindService extends Service {
     private void CreateDialog() {
 //        dialog = new RestRemindDialog(getBaseContext());
         AlertDialog.Builder builder = new AlertDialog.Builder(getBaseContext());
-        dialog = builder.create();
+//        dialog = builder.create();
+        dialog = new Dialog(getBaseContext(), R.style.mydialog);
         dialog.setCanceledOnTouchOutside(false);
         dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        dialog.setCancelable(false);
+        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) { //监控/拦截/屏蔽返回键
+                    Log.e("onKyeDown", "KEYCODE_BACK");
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
         dialog.show();
-        dialog.setContentView(R.layout.dialog_restremine);
-        dialog.getWindow().setLayout(1260, 600);
+        Window window = dialog.getWindow();
+        window.setContentView(R.layout.dialog_restremine);
+//        dialog.getWindow().setLayout(840, 767);
+//        window.setBackgroundDrawableResource(R.mipmap.icon_remind2);
+        btn_back = (Button) dialog.findViewById(R.id.btn_Back);
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
     }
 
     @Override

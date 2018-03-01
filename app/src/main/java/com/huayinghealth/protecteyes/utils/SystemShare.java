@@ -2,6 +2,7 @@ package com.huayinghealth.protecteyes.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.provider.Settings;
 
 /**
  * Created by ChanLin on 2017/11/20.
@@ -14,7 +15,27 @@ public class SystemShare {
 
     public static String sixEnable = "sixEnable";
     public static String sixProgress = "sixProgress";
+    public static Boolean PSENSOR_DEFAULT_STATUS = true;
 
+    public static final String EyeProtectSwitch = "EyeProtectSwitch"; // 视力开关
+    public static final String ReversalSwitch = "ReversalSwitch"; // 视力开关
+    public static final String BRIGHTNESS_MODE_SWITCH = "brightness_mode_switch"; // 光线感应开关
+    public static final String BULELIGHE_STATE = "protect.eyes.update_bluelight_state"; // 光线感应开关状态值 1、true 0、false
+    public static final String ResttimeSwitch = "ResttimeSwitch";//第三个开关
+    public static final String LearnTime = "LearnTime";//第三个 时间
+    public static final String ShakeRemindSwitch = "ShakeRemindSwitch"; // 抖动开关
+    public static final String colorOnOff = "colorOnOff"; // 开关
+    public static final String colorValue = "colorValue"; // 开关
+
+    public static final String PSENSOR_INTENT_NAME = "com.ProtectEyes.fragmentone.PsensorSwitch";
+    public static final String PSENSOR_INTENT_STATUS = "PsensorStatus";
+    public static final String REVERSAL_INTENT_NAME = "com.ProtectEyes.fragmentfour.ReversalSwitch";
+    public static final String REVERSAL_INTENT_STATUS = "ReversalStatus";
+    public static final String DOUDO_INTENT_NAME = "com.ProtectEyes.fragmentfive.DoudoSwitch";
+    public static final String DOUDO_INTENT_STATUS = "DoudoStatus";
+    public static final String UPDATE_BLUELIGHT = "com.huaying.protecteyes.update_bluelight";
+    public static final String UPDATE_AUTOBACKLIGHT = "android.intent.action.update_autoBrightness"; // 自动调节亮度广播
+    public static final String SYSTEM_AUTOBACKLIGHT_STAUTS = "android.Intent.autoBrightness_switch"; // 系统自动调节亮度的状态
     /**
      * 保存String类型数据
      *
@@ -111,8 +132,36 @@ public class SystemShare {
     public static int getSettingInt(Context context, String strKey) {
         SharedPreferences clientPreferences = context.getSharedPreferences(
                 PREFIX_NAME, Context.MODE_MULTI_PROCESS);
-        int value = clientPreferences.getInt(strKey, 0);
+        int value = clientPreferences.getInt(strKey, 1);
         return value;
+    }
+    public static int getSettingInt(Context context, String strKey,int time) {
+        SharedPreferences clientPreferences = context.getSharedPreferences(
+                PREFIX_NAME, Context.MODE_MULTI_PROCESS);
+        int value = clientPreferences.getInt(strKey, time);
+        return value;
+    }
+    /**
+     * 获取int类型数据
+     *
+     * @param context
+     */
+    public static int getsPrefValue(Context context, String strStatus, String strKey) {
+        SharedPreferences sPref = context.getSharedPreferences(strStatus, Context.MODE_PRIVATE);
+        return sPref.getInt(strKey, 0);
+    }
+
+    /**
+     * 保存int类型数据
+     *
+     * @param context
+     * @param value
+     */
+    public static void setsPrefValue(Context context, String strStatus, String strKey, int value) {
+        SharedPreferences sPref = context.getSharedPreferences(strStatus, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sPref.edit();
+        editor.putInt(strKey, value);
+        editor.commit();
     }
 
 }
