@@ -111,7 +111,7 @@ public class VisionProtectionService extends Service {
     public void onCreate() {
 
         mContext = getBaseContext();
-        lightLoadingAudio();
+//        lightLoadingAudio();
         Log.d(TAG, "------on create VisionProtectionService--------" + "build_android_ver=" + Build.VERSION.SDK_INT);
 		if(Build.VERSION.SDK_INT == 23){   //android6.0
             doudo_active_set_time = 8;
@@ -219,7 +219,7 @@ public class VisionProtectionService extends Service {
                             dialog.dismiss();
                         }
                         handler.sendEmptyMessage(0);
-                        lightplayAuio(AUDIO_DOUDO_PROTECTION_OPEN);
+//                        lightplayAuio(AUDIO_DOUDO_PROTECTION_OPEN);
                         phone_in_doudo_status = 1;
                         Log.e(TAG, "----------" + "build_android_ver=" + Build.VERSION.SDK_INT);
                         //这里触发检测到抖动.可以发送一个广播,然后app接收到广播后做相应的界面提示
@@ -425,11 +425,11 @@ public class VisionProtectionService extends Service {
                         }
                         handler.sendEmptyMessage(0);
                         if (eye_protect_sound_select == 1) {
-                            lightplayAuio(AUDIO_VISION_PROTECTION_OPEN);
+//                            lightplayAuio(AUDIO_VISION_PROTECTION_OPEN);
                         } else if (eye_protect_sound_select == 2) {
-                            lightplayAuio(AUDIO_FANZAN_PROTECTION_OPEN);
+//                            lightplayAuio(AUDIO_FANZAN_PROTECTION_OPEN);
                         } else {
-                            lightplayAuio(AUDIO_VISION_PROTECTION_OPEN);
+//                            lightplayAuio(AUDIO_VISION_PROTECTION_OPEN);
                         }
                     } else {
                         num1--;
@@ -499,9 +499,9 @@ public class VisionProtectionService extends Service {
     private void lightLoadingAudio() {
         soundPoollight = new SoundPool(1, AudioManager.STREAM_MUSIC, 100);
         soundPoolMaplight = new HashMap<String, Integer>();
-        soundPoolMaplight.put(AUDIO_VISION_PROTECTION_OPEN, soundPoollight.load(getBaseContext(), R.raw.audio_vision_protection, 2));
-        soundPoolMaplight.put(AUDIO_FANZAN_PROTECTION_OPEN, soundPoollight.load(getBaseContext(), R.raw.audio_fanzan_wainning, 1));
-        soundPoolMaplight.put(AUDIO_DOUDO_PROTECTION_OPEN, soundPoollight.load(getBaseContext(), R.raw.audio_doudo_wainning, 1));
+//        soundPoolMaplight.put(AUDIO_VISION_PROTECTION_OPEN, soundPoollight.load(getBaseContext(), R.raw.audio_vision_protection, 2));
+//        soundPoolMaplight.put(AUDIO_FANZAN_PROTECTION_OPEN, soundPoollight.load(getBaseContext(), R.raw.audio_fanzan_wainning, 1));
+//        soundPoolMaplight.put(AUDIO_DOUDO_PROTECTION_OPEN, soundPoollight.load(getBaseContext(), R.raw.audio_doudo_wainning, 1));
     }
 
     private void lightplayAuio(String audioFile) {
