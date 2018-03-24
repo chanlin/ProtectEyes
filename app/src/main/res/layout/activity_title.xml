@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/tv_title"
         android:layout_toEndOf="@+id/tv_main_hint"
-        android:text="（当前版本 V2.0）"
+        android:text="（当前版本 V3.0）"
         android:textColor="@color/textcolor"
         android:textSize="12sp" />
 
