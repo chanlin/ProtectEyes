@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
             android:layout_marginTop="10dp"
-            android:text="在抖动的情况下（如乘坐行驶在颠簸的道路上的公交车），使用平板时会弹出抖动提示并锁定平板，提示当前环境不能使用平板。"
+            android:text="@string/five_content_msg"
             android:textColor="@color/gray"
             android:textSize="12sp" />
     </LinearLayout>
@@ -58,7 +58,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="抖动识别"
+                android:text="@string/jitter"
                 android:textColor="@color/blue37"
                 android:textSize="16sp" />
 
@@ -66,7 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="在抖动的情况下（如乘坐行驶在颠簸的道路上的公交车），使用平板时会弹出抖动提示并锁定平板，提示当前环境不能使用平板。"
+                android:text="@string/jitter_content"
                 android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
@@ -110,7 +110,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="运行中的车辆或抖动的环境下光线强度，数量随时都在变化，直接导致视觉疲劳，加速眼细胞老化，使视力不断下降。"
+                android:text="@string/run_msg"
                 android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
@@ -154,7 +154,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="握住平板用力摇晃体验一下吧。"
+                android:text="@string/utry"
                 android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>

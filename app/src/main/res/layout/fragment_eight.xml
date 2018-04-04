@@ -29,7 +29,7 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/button_play"
         android:gravity="center"
-        android:text="播放"
+        android:text="@string/play"
         android:textColor="@color/white"
         android:textSize="16sp" />
 
@@ -60,7 +60,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:gravity="center_vertical"
-            android:text="第一节  揉天应穴"
+            android:text="@string/play_title"
             android:textColor="@color/blue37"
             android:textSize="18sp" />
     </LinearLayout>
@@ -72,7 +72,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
-        android:text="        以左右大拇指罗纹面接左右眉头下面的上眶角处。其他四指散开弯曲如弓状，支在前额上，按探面不要大"
+        android:text="@string/play_content"
         android:textColor="@color/gray"
         android:textSize="12sp" />
     <!--

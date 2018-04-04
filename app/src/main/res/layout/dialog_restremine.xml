@@ -27,7 +27,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="看屏幕太久了，休息一下！"
+            android:text="@string/warring"
             android:textColor="@color/gray"
             android:textSize="12sp" />
 
@@ -45,7 +45,7 @@
             android:layout_weight="1"
             android:background="@color/lucency"
             android:gravity="center"
-            android:text="我知道了"
+            android:text="@string/iknow"
             android:textColor="@color/blue37"
             android:textSize="12sp" />
     </LinearLayout>

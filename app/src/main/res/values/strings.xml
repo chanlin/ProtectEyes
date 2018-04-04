@@ -2,7 +2,12 @@
     <string name="app_name">护眼卫视</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="txt_exit">关闭护眼</string>
-
+    <string name="tv_main_hint">要爱眼，就护眼！请设置健康护眼模式。</string>
+    <string name="tv_version">（当前版本 V2.0）</string>
+    <string name="warring">看屏幕太久了，休息一下！</string>
+    <string name="iknow">我知道了</string>
+    <string name="pad_near_eyes">平板与眼睛距离过近对眼睛不好！</string>
+    
     <!--fragment_one-->
     <string name="title_one">眼距保护</string>
     <string name="title_one_hint">督促孩子与屏幕之间的距离，拒绝近距离看屏幕，调整孩子不良用眼习惯，让孩子和近视说再见。</string>
@@ -20,12 +25,16 @@
     <string name="Simulation_experience_two">打开平板的手电筒对着摄像头照射或者拿着一张黑色卡片放置摄像头前方即可体验哦。</string>
     
     <!--fragment_three-->
+    <string name="title_three1">疲劳提醒</string>
     <string name="title_three">用眼疲劳提醒</string>
     <string name="title_three_hint">专家建议，每次使用平板不宜超过45分钟，有效的休息时间将将降低近视风险，积极做眼保健操可缓解眼部用眼压力。</string>
     <string name="learn_time">学习时长</string>
     <string name="learn_time_hint">在指定时间提醒用户学习太久要注意休息</string>
     <string name="rest_time">休息时长</string>
     <string name="rest_time_hint">休息一段时间后可以继续使用平板</string>
+    <string name="minute">分钟</string>
+    <string name="zero_minute">0 分钟</string>
+    <string name="sixty_minute">60 分钟</string>
     <string name="tired_remind"></string>
     <string name="rest_time_back">休息时间不允许退出休息界面</string>
     
@@ -35,4 +44,30 @@
     <string name="Reversal_hint">系统“反转提醒”功能，当孩子以仰躺的姿势玩平板时，识别系统立即反应，提醒孩子调整姿势，机器马上启动禁用保护系统，孩子将不能使用平板。</string>
     <string name="Experts_read_four">长期仰卧玩平板，会造成脖子茸拉过度、身子不自然弯曲、颈部越来越前倾，造成慢性劳损。其次，左右横躺对左右眼睛的压迫力最大，枕头对眼睛的压迫造成供血不足，时间一长眼睛就会有膨胀感，造成短时性影像重叠。</string>
     <string name="Simulation_experience_four">将平板背面朝上体验一下吧。</string>
+
+    <!-- fragment_five -->
+    <string name="title_five">抖动提醒</string>
+    <string name="five_content_msg">在抖动的情况下（如乘坐行驶在颠簸的道路上的公交车），使用平板时会弹出抖动提示并锁定平板，提示当前环境不能使用平板。</string>
+    <string name="jitter">抖动识别</string>
+    <string name="jitter_content">在抖动的情况下（如乘坐行驶在颠簸的道路上的公交车），使用平板时会弹出抖动提示并锁定平板，提示当前环境不能使用平板。</string>
+    <string name="run_msg">运行中的车辆或抖动的环境下光线强度，数量随时都在变化，直接导致视觉疲劳，加速眼细胞老化，使视力不断下降。</string>
+    <string name="utry">握住平板用力摇晃体验一下吧。</string>
+
+    <!-- fragment_six -->
+    <string name="title_six">色温调节</string>
+    <string name="six_open_protect">打开后拖动进度条可以调节屏幕的色温,更好地保护眼睛</string>
+    <string name="six_please_draw">请拖动进度条调节屏幕色温</string>
+    <string name="six_coldness">冷淡</string>
+    <string name="six_mildness">温暖</string>
+    <!-- fragment_seven -->
+    <string name="title_seven">黑白阅读</string>
+    <string name="look_book">在长期阅读或观看电子书时启用，更舒适的阅读方式</string>
+    <string name="open_msg">打开后，屏幕只显示黑色白色或灰色，过滤掉其它的色彩。眼睛不易疲劳，更适合长时间阅读。</string>
+    <string name="seven_msg_two">黑白模式有效的阻止彩色光线对眼睛的伤害，文字接近纸质书的状态，屏幕显示更柔和。可以有效的保护视力，更适合长时间电子书阅读。</string>
+    <string name="open_black_white">开启黑白阅读模式，进入电子书或文章开始阅读吧！</string>
+    <!-- fragment_eight -->
+    <string name="title_eight">眼保健操</string>
+    <string name="play">播放</string>
+    <string name="play_title">第一节  揉天应穴</string>
+    <string name="play_content">        以左右大拇指罗纹面接左右眉头下面的上眶角处。其他四指散开弯曲如弓状，支在前额上，按探面不要大</string>
 </resources>

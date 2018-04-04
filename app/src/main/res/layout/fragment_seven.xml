@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
             android:layout_marginTop="10dp"
-            android:text="在长期阅读或观看电子书时启用，更舒适的阅读方式"
+            android:text="@string/look_book"
             android:textColor="@color/gray"
             android:textSize="12sp" />
     </LinearLayout>
@@ -58,7 +58,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="黑白阅读"
+                android:text="@string/title_seven"
                 android:textColor="@color/blue37"
                 android:textSize="16sp" />
 
@@ -66,7 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="打开后，屏幕只显示黑色白色或灰色，过滤掉其它的色彩。眼睛不易疲劳，更适合长时间阅读。"
+                android:text="@string/open_msg"
                 android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
@@ -110,7 +110,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="黑白模式有效的阻止彩色光线对眼睛的伤害，文字接近纸质书的状态，屏幕显示更柔和。可以有效的保护视力，更适合长时间电子书阅读。"
+                android:text="@string/seven_msg_two"
                 android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
@@ -155,7 +155,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="开启黑白阅读模式，进入电子书或文章开始阅读吧！"
+                android:text="@string/open_black_white"
                 android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>

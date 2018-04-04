@@ -58,7 +58,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="学习时长:"
+                android:text="@string/learn_time"
                 android:textColor="@color/blue37"
                 android:textSize="18sp" />
 
@@ -67,14 +67,13 @@
                 android:layout_width="35dp"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="0"
                 android:textColor="@color/red"
                 android:textSize="18sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="分钟"
+                android:text="@string/minute"
                 android:textColor="@color/red"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -99,7 +98,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="0 分钟"
+                android:text="@string/zero_minute"
                 android:textColor="@color/blue37"
                 android:textSize="16sp" />
 
@@ -108,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:text="60 分钟"
+                android:text="@string/sixty_minute"
                 android:textColor="@color/blue37"
                 android:textSize="16sp" />
         </RelativeLayout>

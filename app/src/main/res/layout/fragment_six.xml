@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
             android:layout_marginTop="10dp"
-            android:text="打开后拖动进度条可以调节屏幕的色温,更好地保护眼睛"
+            android:text="@string/six_open_protect"
             android:textColor="@color/gray"
             android:textSize="12sp" />
     </LinearLayout>
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:paddingTop="30dp"
-        android:text="请拖动进度条调节屏幕色温"
+        android:text="@string/six_please_draw"
         android:textColor="@color/graycc"
         android:textSize="12sp" />
 
@@ -64,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="冷淡"
+            android:text="@string/six_coldness"
             android:textColor="@color/blue37"
             android:textSize="16sp" />
 
@@ -73,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:text="温暖"
+            android:text="@string/six_mildness"
             android:textColor="@color/blue37"
             android:textSize="16sp" />
     </RelativeLayout>

@@ -22,7 +22,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="195dp"
         android:gravity="center"
-        android:text="平板与眼睛距离过近对眼睛不好！"
+        android:text="@string/pad_near_eyes"
         android:textColor="@color/gray"
         android:textSize="12sp" />
 </LinearLayout>

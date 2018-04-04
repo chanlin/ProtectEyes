@@ -27,7 +27,7 @@
                 android:button="@null"
                 android:checked="true"
                 android:gravity="center"
-                android:text="眼距保护"
+                android:text="@string/title_one"
                 android:textColor="@drawable/tv_background"
                 android:textSize="12sp" />
 
@@ -38,7 +38,7 @@
                 android:background="@drawable/rb_background"
                 android:button="@null"
                 android:gravity="center"
-                android:text="光线感应"
+                android:text="@string/title_two"
                 android:textColor="@drawable/tv_background"
                 android:textSize="12sp" />
 
@@ -49,7 +49,7 @@
                 android:background="@drawable/rb_background"
                 android:button="@null"
                 android:gravity="center"
-                android:text="疲劳提醒"
+                android:text="@string/title_three1"
                 android:textColor="@drawable/tv_background"
                 android:textSize="12sp" />
 
@@ -60,7 +60,7 @@
                 android:background="@drawable/rb_background"
                 android:button="@null"
                 android:gravity="center"
-                android:text="反转提醒"
+                android:text="@string/title_four"
                 android:textColor="@drawable/tv_background"
                 android:textSize="12sp" />
 
@@ -71,7 +71,7 @@
                 android:background="@drawable/rb_background"
                 android:button="@null"
                 android:gravity="center"
-                android:text="抖动提醒"
+                android:text="@string/title_five"
                 android:textColor="@drawable/tv_background"
                 android:textSize="12sp" />
 
@@ -82,7 +82,7 @@
                 android:background="@drawable/rb_background"
                 android:button="@null"
                 android:gravity="center"
-                android:text="色温调节"
+                android:text="@string/title_six"
                 android:textColor="@drawable/tv_background"
                 android:textSize="12sp" />
 
@@ -93,7 +93,7 @@
                 android:background="@drawable/rb_background"
                 android:button="@null"
                 android:gravity="center"
-                android:text="黑白阅读"
+                android:text="@string/title_seven"
                 android:textColor="@drawable/tv_background"
                 android:textSize="12sp" />
 
@@ -104,7 +104,7 @@
                 android:background="@drawable/rb_background"
                 android:button="@null"
                 android:gravity="center"
-                android:text="眼保健操"
+                android:text="@string/title_eight"
                 android:textColor="@drawable/tv_background"
                 android:textSize="12sp" />
         </RadioGroup>
