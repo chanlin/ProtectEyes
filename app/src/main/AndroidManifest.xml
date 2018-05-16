@@ -3,7 +3,7 @@
     package="com.huayinghealth.protecteyes"
     android:sharedUserId="android.uid.system"
     android:versionCode="1"
-    android:versionName="1.0">
+    android:versionName="3.0">
     <!--android:sharedUserId="android.uid.system"-->
     <!--android:sharedUserId="com.edu_app"-->
     <!--<uses-permission android:name="android.permission.WRITE_SETTINGS" />
