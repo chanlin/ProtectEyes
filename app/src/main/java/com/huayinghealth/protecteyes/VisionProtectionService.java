@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.app.Dialog;
 import android.app.Instrumentation;
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -52,7 +53,7 @@ public class VisionProtectionService extends Service {
 
     Context mContext;
     private Timer timer;
-    AlertDialog dialog = null;
+    Dialog dialog = null;
     private int num1 = 2;
     private boolean mTimerIsRunning = false;
     private boolean dismiss_when_not_fit_status = false;
@@ -101,6 +102,9 @@ public class VisionProtectionService extends Service {
 	private boolean doudo_idle_status = true;
 	int doudo_active_set_time = 0;
 	int doudo_value_level = 0;
+	
+	//open and close all voice   false=close   true=open
+	private boolean Voice_control = false;
 
     public IBinder onBind(Intent intent) {
 
@@ -110,10 +114,10 @@ public class VisionProtectionService extends Service {
     public void onCreate() {
 
         mContext = getBaseContext();
-        lightLoadingAudio();
+        lightLoadingAudio();  
         Log.d(TAG, "------on create VisionProtectionService--------" + "build_android_ver=" + Build.VERSION.SDK_INT);
 		if(Build.VERSION.SDK_INT == 23){   //android6.0
-            doudo_active_set_time = 8;
+            doudo_active_set_time = 5;
             doudo_value_level = 120;
             sensorProximityValueOld_default = 1f;
 		}else{    //android7.0
@@ -441,8 +445,9 @@ public class VisionProtectionService extends Service {
     }
 
     private void CreateDialog() {
-        Builder builder = new AlertDialog.Builder(mContext);
-        dialog = builder.create();
+        Builder builder = new Builder(mContext);
+//        dialog = builder.create();
+        dialog = new Dialog(mContext, R.style.mydialog);
         dialog.setCanceledOnTouchOutside(false);
         dialog.getWindow().setType(
                 (WindowManager.LayoutParams.TYPE_SYSTEM_ALERT));
@@ -457,21 +462,23 @@ public class VisionProtectionService extends Service {
             dialog.show();
             Window window = dialog.getWindow();
             window.setContentView(R.layout.vp_dialog);
-            dialog.getWindow().setLayout(840, 767);
+//            dialog.getWindow().setLayout(840, 767);
             text_remind = (TextView) dialog.findViewById(R.id.text_remind);
             vp_animation = (ImageView) dialog.findViewById(R.id.vp_animation);
             if (remind_title == 1) {
 //                vp_animation.setImageResource(R.drawable.vision_protection_ani);
 //                animationDrawable = (AnimationDrawable) vp_animation.getDrawable();
 //                animationDrawable.start();
-                window.setBackgroundDrawableResource(R.mipmap.icon_remind1);
-//                vp_animation.setImageResource(R.mipmap.icon_remind1);
+//                window.setBackgroundDrawableResource(R.mipmap.icon_remind1);
+                vp_animation.setImageResource(R.mipmap.icon_dialog1);
                 text_remind.setText("平板与眼睛距离过近对眼睛不好！");
             } else if (remind_title == 2) {
-                window.setBackgroundDrawableResource(R.mipmap.icon_remind3);
+//                window.setBackgroundDrawableResource(R.mipmap.icon_remind3);
+                vp_animation.setImageResource(R.mipmap.icon_dialog3);
                 text_remind.setText("躺着看对眼睛不好,请不要躺着看屏幕！");
             } else if (remind_title == 3) {
-                window.setBackgroundDrawableResource(R.mipmap.icon_remind4);
+//                window.setBackgroundDrawableResource(R.mipmap.icon_remind4);
+                vp_animation.setImageResource(R.mipmap.icon_dialog4);
 //                vp_animation.setImageResource(R.mipmap.icon_remind4);
                 text_remind.setText("在晃动平板时看屏幕对眼睛不好!");
             }
@@ -493,6 +500,7 @@ public class VisionProtectionService extends Service {
     }
 
     private void lightLoadingAudio() {
+		if(Voice_control == false) return;
         soundPoollight = new SoundPool(1, AudioManager.STREAM_MUSIC, 100);
         soundPoolMaplight = new HashMap<String, Integer>();
         soundPoolMaplight.put(AUDIO_VISION_PROTECTION_OPEN, soundPoollight.load(getBaseContext(), R.raw.audio_vision_protection, 2));
@@ -501,7 +509,7 @@ public class VisionProtectionService extends Service {
     }
 
     private void lightplayAuio(String audioFile) {
-
+		if(Voice_control == false) return;
         AudioManager mgr = (AudioManager) mContext
                 .getSystemService(Context.AUDIO_SERVICE);
         float streamVolumeCurrent = mgr
