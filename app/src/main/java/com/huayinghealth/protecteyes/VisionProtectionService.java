@@ -445,7 +445,7 @@ public class VisionProtectionService extends Service {
     }
 
     private void CreateDialog() {
-        Builder builder = new Builder(mContext);
+        Builder builder = new AlertDialog.Builder(mContext);
 //        dialog = builder.create();
         dialog = new Dialog(mContext, R.style.mydialog);
         dialog.setCanceledOnTouchOutside(false);

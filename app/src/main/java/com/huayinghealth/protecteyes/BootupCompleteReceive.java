@@ -3,9 +3,13 @@ package com.huayinghealth.protecteyes;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.provider.Settings;
 import android.util.Log;
 
 import com.huayinghealth.protecteyes.utils.SystemShare;
+
+import static android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE;
+import static android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL;
 
 /**
  * Created by Administrator on 2017/11/29.
@@ -34,6 +38,8 @@ public class BootupCompleteReceive extends BroadcastReceiver {
             ResttimeSwitch = SystemShare.getSettingBoolean(mContext,SystemShare.ResttimeSwitch,false);
             ColorSwitch = SystemShare.getSettingBoolean(mContext,SystemShare.colorOnOff,false);
             ColorValue = SystemShare.getSettingInt(mContext,SystemShare.colorValue,50);
+            int brightnessMode = Settings.System.getInt(context.getContentResolver(), SCREEN_BRIGHTNESS_MODE, SCREEN_BRIGHTNESS_MODE_MANUAL);
+            AUTOBACKLIGHT_SWITCH = brightnessMode != SCREEN_BRIGHTNESS_MODE_MANUAL;
             Log.e("luwl"," --luwl_test-shutdownandboottimeReceiver psensor=" + Psensor_switch + " reversal=" + Reversal_switch + " Doudo=" + Doudo_switch
              + " ResttimeSwitch=" + ResttimeSwitch);
             //if(Psensor_switch || Reversal_switch || Doudo_switch) {
@@ -52,16 +58,6 @@ public class BootupCompleteReceive extends BroadcastReceiver {
                 intent_color.putExtra("protect.eyes.update_bluelight_state","1");
                 intent_color.putExtra("protect.eyes.update_bluelight_progress",ColorValue);
                 mContext.sendBroadcast(intent_color);
-        }
-
-        /**
-         * 接收光线感应开关状态
-         * 20171205 by yangcl
-         * */
-        if (action.equals(SystemShare.UPDATE_AUTOBACKLIGHT)) {
-            AUTOBACKLIGHT_SWITCH = intent.getStringExtra(SystemShare.SYSTEM_AUTOBACKLIGHT_STAUTS).equals("1") ? true : false;
-            Log.e("AUTOBACKLIGHT_SWITCH", "AUTOBACKLIGHT_SWITCH = " + AUTOBACKLIGHT_SWITCH);
-            SystemShare.setSettingBoolean(mContext, SystemShare.BRIGHTNESS_MODE_SWITCH, AUTOBACKLIGHT_SWITCH);
         }
     }
 }
