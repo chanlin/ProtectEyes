@@ -99,8 +99,19 @@ public class FragmentTwo extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        AUTOBACKLIGHT_SWITCH = SystemShare.getSettingBoolean(getActivity(), SystemShare.BRIGHTNESS_MODE_SWITCH, false);
+        int brightnessMode = Settings.System.getInt(getActivity().getContentResolver(),
+                SCREEN_BRIGHTNESS_MODE, SCREEN_BRIGHTNESS_MODE_MANUAL);
+        Log.v("shopping", "onResume brightnessMode = " + brightnessMode);
+        //AUTOBACKLIGHT_SWITCH = SystemShare.getSettingBoolean(getActivity(), SystemShare.BRIGHTNESS_MODE_SWITCH, false); // 获取开关的状态
+        AUTOBACKLIGHT_SWITCH = brightnessMode != SCREEN_BRIGHTNESS_MODE_MANUAL;
+        Log.v("shopping", "onResume AUTOBACKLIGHT_SWITCH = " + AUTOBACKLIGHT_SWITCH);
+        SystemShare.setSettingBoolean(getActivity(), SystemShare.BRIGHTNESS_MODE_SWITCH, AUTOBACKLIGHT_SWITCH);
         rb_LightProtect.setChecked(AUTOBACKLIGHT_SWITCH);
-        Log.e("UPDATE_BLUELIGHT", "AUTOBACKLIGHT_SWITCH == " + AUTOBACKLIGHT_SWITCH);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.v("shopping", "onStart");
     }
 }

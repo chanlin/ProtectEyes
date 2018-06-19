@@ -28,7 +28,10 @@ public class FragmentSix extends Fragment implements View.OnClickListener{
 
 
     private SeekBar seekBar;
-    public FragmentSix(){}
+
+    public FragmentSix() {
+    }
+
     /*public FragmentSix (boolean enable){
         this.cb_enable = enable;
     }*/

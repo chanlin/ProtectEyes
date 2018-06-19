@@ -304,13 +304,13 @@ public class VisionProtectionService extends Service {
                     if (sensorProximityValue != sensorProximityValueOld) {
                         if (sensorProximityValue == 0.0 && sensorAccFanzanValue == 0) {
                             dismiss_when_not_fit_status = false;
-							psensor_idle_status = false;
+                            psensor_idle_status = false;
                             eye_protect_sound_select = 1;
                             remind_title = 1;
                             Log.e("luwl", " --luwl_test-TYPE_PROXIMITY-dialogThread start mTimerIsRunning=!!!" + mTimerIsRunning);
                             dialogThread();
                         } else if (sensorProximityValue != 0){
-						    psensor_idle_status = true;
+                            psensor_idle_status = true;
                             dismiss_animationDrawable_dialog();
                             Log.e("luwl", " --luwl_test-TYPE_PROXIMITY-from close-dismiss_animationDrawable_dialog=");
                         }
@@ -322,7 +322,7 @@ public class VisionProtectionService extends Service {
                         if (dismiss_when_not_fit_status == false) {
                             dismiss_when_not_fit_status = true;
                             sensorProximityValueOld = sensorProximityValueOld_default;
-							psensor_idle_status = true;
+                            psensor_idle_status = true;
                             dismiss_animationDrawable_dialog();
                             Log.e("luwl", " --luwl_test-TYPE_PROXIMITY-from not fit-dismiss_animationDrawable_dialog");
                         }
@@ -509,7 +509,7 @@ public class VisionProtectionService extends Service {
     }
 
     private void lightplayAuio(String audioFile) {
-		if(Voice_control == false) return;
+        if (Voice_control == false) return;
         AudioManager mgr = (AudioManager) mContext
                 .getSystemService(Context.AUDIO_SERVICE);
         float streamVolumeCurrent = mgr

@@ -149,6 +149,6 @@ public class FragmentOne  extends Fragment implements View.OnClickListener {
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        getActivity().unregisterReceiver(receiver);
+        getActivity().unregisterReceiver(receiver);
     }
 }

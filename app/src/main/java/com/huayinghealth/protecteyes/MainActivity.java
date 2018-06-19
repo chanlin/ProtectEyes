@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -42,6 +43,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         mContex = this;
         init();
        // setClick();
+        Intent service = new Intent(mContex, LocationService.class);
+        mContex.startService(service);
     }
 
     private  void init(){
